@@ -48,7 +48,7 @@ func (p *People) To_Json_Form() *People_Json_Form {
 
 func (t Tree) Savefile_Json() error {
 	id_root := t.Root
-	root, _ := PM.GetPeopleByIndex(id_root)
+	root := PM.GetPeopleByIndex(id_root)
 	data := root.To_Json_Form()
 	file, _ := json.MarshalIndent(data, "", "")
 	_ = ioutil.WriteFile(t.Filename_json, file, 0644)
