@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+//manage a group of people
 type PeopleManager struct {
 	AllPeople []*People
 }
@@ -19,28 +20,26 @@ func (pm PeopleManager) GetNbr() int {
 	return len(pm.AllPeople)
 }
 
-func (pm PeopleManager) GetPeopleByIndex(Id int) (*People, error) {
+func (pm PeopleManager) GetPeopleByIndex(Id int) *People {
 	if pm.GetNbr() > 0 {
 		for i := 0; i < pm.GetNbr(); i++ {
 			if pm.AllPeople[i].Id == Id {
-				return pm.AllPeople[i], nil
+				return pm.AllPeople[i]
 			}
 		}
 	}
-
-	return nil, errors.New("can't find person by id")
-}
-
-func (pm *PeopleManager) AddPeople(p *People) error {
-	_, er := pm.GetPeopleByIndex(p.Id)
-	if er == nil {
-		return errors.New("this person already existes")
-	}
-	pm.AllPeople = append(pm.AllPeople, p)
-	//(*pm).AllPeople[pm.GetNbr()] = p
 	return nil
 }
 
+func (pm *PeopleManager) AddPeople(p *People) error {
+	if pm.GetPeopleByIndex(p.Id) != nil {
+		return errors.New("this person already existes")
+	}
+	pm.AllPeople = append(pm.AllPeople, p)
+	return nil
+}
+
+//make data to save in a csv file
 func (pm PeopleManager) CreateData() [][]string {
 	var res [][]string
 	for i := 0; i < pm.GetNbr(); i++ {
@@ -95,7 +94,9 @@ func (pm *PeopleManager) Clear() {
 	pm.AllPeople = append(pm.AllPeople[:0], pm.AllPeople[pm.GetNbr():]...)
 }
 
+//read file csv
 func (pm *PeopleManager) Read_CSV() error {
+	fmt.Println("starting read")
 	pm.Clear()
 	f, err := os.Open("people.csv")
 	if err != nil {
@@ -131,16 +132,13 @@ func (pm *PeopleManager) Read_CSV() error {
 	}
 	for i := 0; i < pm.GetNbr(); i++ {
 		if list_dad[i] != -1 {
-			dad, _ := pm.GetPeopleByIndex(list_dad[i])
-			pm.AllPeople[i].AddDad(dad)
+			pm.AllPeople[i].AddDad(pm.GetPeopleByIndex(list_dad[i]))
 		}
 		if list_mom[i] != -1 {
-			mom, _ := pm.GetPeopleByIndex(list_mom[i])
-			pm.AllPeople[i].AddMom(mom)
+			pm.AllPeople[i].AddMom(pm.GetPeopleByIndex(list_mom[i]))
 		}
 		if list_spouse[i] != -1 {
-			spouse, _ := pm.GetPeopleByIndex(list_spouse[i])
-			pm.AllPeople[i].AddSpouse(spouse)
+			pm.AllPeople[i].AddSpouse(pm.GetPeopleByIndex(list_spouse[i]))
 		}
 	}
 	return nil
