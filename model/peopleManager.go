@@ -114,7 +114,7 @@ func (pm *PeopleManager) Read_CSV() error {
 		if err != nil {
 			log.Fatal(err)
 		}
-		tmp := &People{Id: int(StringToInt(record[0])), Ten: record[1], Ho: record[2], Rank: int(record[5][0]), Gender: record[9][0]}
+		tmp := &People{Id: int(StringToInt(record[0])), Ten: record[1], Ho: record[2], Rank: StringToInt(record[5]), Gender: record[9][0]}
 		if record[3] != "nil" {
 			layout := "2006-01-02T15:04:05.000Z"
 			t, _ := time.Parse(layout, record[3])
