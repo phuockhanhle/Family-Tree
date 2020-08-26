@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"model"
+	"example.go/go/src/Family-Tree/model"
 )
 
 func exemple() {
@@ -118,9 +118,24 @@ func main() {
 	fmt.Println(roots_of_1)
 
 	//check func SameRootByRank
+	//
+	j := 1
 	for i := 1; i < 25; i++ {
-		if i != 18 {
-			fmt.Println(pm.GetPeopleByIndex(18).Ten, "is same root with ", pm.GetPeopleByIndex(i).Ten, "by rank ", model.Rank_of_same_root(pm.GetPeopleByIndex(18), pm.GetPeopleByIndex(i)))
+		if i != j {
+			fmt.Println(pm.GetPeopleByIndex(j).Ten, "is same root with ", pm.GetPeopleByIndex(i).Ten, "by rank ", model.Rank_of_same_root(pm.GetPeopleByIndex(j), pm.GetPeopleByIndex(i)))
 		}
 	}
+
+	for i := 1; i < 25; i++ {
+		if i != j {
+			fmt.Println(pm.GetPeopleByIndex(j).Ten, "is distance with ", pm.GetPeopleByIndex(i).Ten, "by ", model.Distance(pm.GetPeopleByIndex(j), pm.GetPeopleByIndex(i)))
+		}
+	}
+	//check func Get_people_in_view
+	tmp := model.Get_people_in_view(pm.GetPeopleByIndex(j))
+	fmt.Println("People in view of ", pm.GetPeopleByIndex(j).Ten)
+	for i := 0; i < tmp.GetNbr(); i++ {
+		fmt.Println(tmp.AllPeople[i].Ten)
+	}
+
 }
