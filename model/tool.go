@@ -1,5 +1,9 @@
 package model
 
+import (
+	"math"
+)
+
 func GetRoot(p *People) []int {
 	var res []int
 	if p.Dad == nil && p.Mom == nil {
@@ -27,9 +31,9 @@ func IsSameRoot(p1 *People, p2 *People) bool {
 	return false
 }
 
-func Rank_of_same_root(p1 *People, p2 *People) float32 {
+func Rank_of_same_root(p1 *People, p2 *People) int {
 	if !IsSameRoot(p1, p2) {
-		return -1
+		return 10
 	} else {
 		if p1.Rank == p2.Rank {
 			if p1.Dad == p2.Dad || p1.Mom == p2.Mom {
@@ -53,10 +57,10 @@ func Rank_of_same_root(p1 *People, p2 *People) float32 {
 				return 0
 			} else {
 				if IsSameRoot(p1.Dad, p2) {
-					return Rank_of_same_root(p1.Dad, p2) + 0.6
+					return Rank_of_same_root(p1.Dad, p2)
 				}
 				if IsSameRoot(p1.Mom, p2) {
-					return Rank_of_same_root(p1.Mom, p2) + 0.6
+					return Rank_of_same_root(p1.Mom, p2)
 				}
 			}
 		}
@@ -65,4 +69,10 @@ func Rank_of_same_root(p1 *People, p2 *People) float32 {
 		}
 	}
 	return 0
+}
+func Distance_generation(p1 *People, p2 *People) int {
+	return int(math.Abs(float64(p1.Rank - p2.Rank)))
+}
+func Distance(p1 *People, p2 *People) int {
+	return Distance_generation(p1, p2) + Rank_of_same_root(p1, p2)
 }
