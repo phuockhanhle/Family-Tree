@@ -1,17 +1,21 @@
 package model
 
-func Get_people_in_view(p *People) PeopleManager {
-	var res PeopleManager
-	for i := 0; i < PM.GetNbr(); i++ {
-		if Distance(PM.AllPeople[i], p) <= 2 || Rank_of_same_root(PM.AllPeople[i], p) == 0 {
-			res.AddPeople(PM.AllPeople[i])
+/*
+// WIP
+func GetPeopleInView(p *Person) PeopleManager {
+	//
+		var res PeopleManager
+		for i := 0; i < PM.GetNbr(); i++ {
+			if Distance(PM.AllPeople[i], p) <= 2 || RankOfSameRoot(PM.AllPeople[i], p) == 0 {
+				res.AddPeople(PM.AllPeople[i])
+			}
+			if PM.AllPeople[i].Rank == p.Rank-1 && PM.AllPeople[i].Spouse != nil && Distance(PM.AllPeople[i].Spouse, p) == 2 {
+				res.AddPeople(PM.AllPeople[i])
+			}
 		}
-		if PM.AllPeople[i].Rank == p.Rank-1 && PM.AllPeople[i].Spouse != nil && Distance(PM.AllPeople[i].Spouse, p) == 2 {
-			res.AddPeople(PM.AllPeople[i])
-		}
-	}
-	return res
+		return res
 }
+*/
 
 // func To_CSV_file(p *People) error {
 // 	f, err := os.OpenFile(p.Ten+"_view.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
@@ -25,7 +29,7 @@ func Get_people_in_view(p *People) PeopleManager {
 // 	w.Flush()
 // 	for i:= 0;i<pm.GetNbr();i++ {
 // 		tmp := pm.AllPeople[i]
-// 		if tmp.Rank == p.Rank -3  && Rank_of_same_root( tmp,p) == 0{
+// 		if tmp.Rank == p.Rank -3  && RankOfSameRoot( tmp,p) == 0{
 // 				children := tmp.GetChildren()
 // 				for j:=0;j<len(children);j++ {
 // 					if
