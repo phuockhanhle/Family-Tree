@@ -5,22 +5,22 @@ import (
 )
 
 // DefaultRank is default value for rank of each person
-const DefaultRank = math.MinInt32
+const DefaultRank int = math.MinInt32
 
 // IDNotFound is to represent a person that does not exist
 const IDNotFound int = -1
 
 // IDSeparator is used for string containing many IDs
-const IDSeparator = "-"
+const IDSeparator string = "-"
 
 // Role is new typename for relational roles
 type Role byte
 
 // Enums for relational roles
 const (
-	ParentRole Role = 'P'
-	SpouseRole Role = 'S'
-	ChildRole  Role = 'C'
+	ParentRole Role = iota
+	SpouseRole
+	ChildRole
 )
 
 // PersoRela is a map (dictionary) storing all the relations (with other people) of each person
