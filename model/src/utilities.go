@@ -74,18 +74,24 @@ func IsSameRoot(p1 *Person, p2 *Person) bool {
 	return false
 }
 
-// FindFirstSameRootInternal calls FindFirstSameRoot and considers the result to generate its return
-func FindFirstSameRootInternal(p1 *Person, p2 *Person) (*Person, *Person, *Person) {
-	root, directAncestorP1, directAncestorP2 := FindFirstSameRoot(p1, p2)
-	if root != nil && (directAncestorP1 == nil && directAncestorP2 == nil) {
-		return root, p1, p2
+// TraceOrigins calls FindFirstSameRoot and considers the result to generate its return
+func TraceOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
+	root, directAncestorsP1, directAncestorsP2 := FindFirstSameRoot(p1, p2)
+	if root == nil {
+		return nil, nil, nil
 	}
-	return root, directAncestorP1, directAncestorP2
+	if directAncestorsP1 == nil && directAncestorsP2 == nil {
+		return root, []*Person{p1}, []*Person{p2}
+	}
+	return root, append(directAncestorsP1, p1), append(directAncestorsP2, p2)
 }
 
-// FindFirstSameRoot returns the first (closest) common root of both people
-// This is only the carrier function, calling FindFirstSameRootInternal to consider different conditions for its return
-func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, *Person, *Person) {
+// FindFirstSameRoot returns:
+// 	- the first (closest) common root of both people
+//	- trace back from the common root to p1
+//	- trace back from the common root to p
+// FindFirstSameRoot is the carrier, calling TraceOrigins to consider different conditions for its return
+func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	if IsSameRoot(p1, p2) == false {
 		return nil, nil, nil
 	}
@@ -93,13 +99,17 @@ func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, *Person, *Person) {
 		if p1.Rank == p2.Rank {
 			for _, p1Parent := range []*Person{p1.Dad, p1.Mom} {
 				for _, p2Parent := range []*Person{p2.Dad, p2.Mom} {
-					return FindFirstSameRootInternal(p1Parent, p2Parent)
+					if root, directAncestorsP1, directAncestorsP2 := TraceOrigins(p1Parent, p2Parent); root != nil {
+						return root, directAncestorsP1, directAncestorsP2
+					}
 				}
 			}
 		}
 		if p1.Rank > p2.Rank {
 			for _, p1Parent := range []*Person{p1.Dad, p1.Mom} {
-				return FindFirstSameRootInternal(p1Parent, p2)
+				if root, directAncestorsP1, directAncestorsP2 := TraceOrigins(p1Parent, p2); root != nil {
+					return root, directAncestorsP1, directAncestorsP2
+				}
 			}
 		}
 		if p1.Rank < p2.Rank {
