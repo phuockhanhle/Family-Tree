@@ -96,7 +96,8 @@ func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 		return nil, nil, nil
 	}
 	if IsSamePerson(p1, p2) == false {
-		if p1.Rank == p2.Rank {
+		switch {
+		case p1.Rank == p2.Rank:
 			for _, p1Parent := range []*Person{p1.Dad, p1.Mom} {
 				for _, p2Parent := range []*Person{p2.Dad, p2.Mom} {
 					if root, directAncestorsP1, directAncestorsP2 := TraceOrigins(p1Parent, p2Parent); root != nil {
@@ -104,15 +105,13 @@ func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 					}
 				}
 			}
-		}
-		if p1.Rank > p2.Rank {
+		case p1.Rank > p2.Rank:
 			for _, p1Parent := range []*Person{p1.Dad, p1.Mom} {
 				if root, directAncestorsP1, directAncestorsP2 := TraceOrigins(p1Parent, p2); root != nil {
 					return root, directAncestorsP1, directAncestorsP2
 				}
 			}
-		}
-		if p1.Rank < p2.Rank {
+		case p1.Rank < p2.Rank:
 			return FindFirstSameRoot(p2, p1)
 		}
 	}
