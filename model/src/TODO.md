@@ -1,5 +1,6 @@
 ## Short term
-
+- Migrate PeopleManager to database
+- Write test
 
 ## Long term
-- Review PeopleManager + Add database
+- Mechanism/structure to save "each family tree"
