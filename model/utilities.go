@@ -63,6 +63,7 @@ func GetRoot(p *Person) []*Person {
 }
 
 // IsSameRoot returns if 2 people have the same root, and the first common root of them
+// Chuyen thanh map -> O(m+n)
 func IsSameRoot(p1 *Person, p2 *Person) bool {
 	for _, rootP1 := range GetRoot(p1) {
 		for _, rootP2 := range GetRoot(p2) {
