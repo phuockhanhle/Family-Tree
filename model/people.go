@@ -10,6 +10,7 @@ type Person struct {
 	ID        int
 	FirstName string
 	LastName  string
+	NickName  string
 	Gender    GenderType
 	Birthday  time.Time
 	Deathday  time.Time

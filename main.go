@@ -1,8 +1,7 @@
 package main
 
 import (
-	//"example.go/go/src/Family-Tree/model"
-	model "./model/src"
+	model "github.com/phuockhanhle/familytree/model"
 )
 
 func exemple() {
@@ -65,7 +64,7 @@ func exemple() {
 		p21.AddChildren(p22)
 		p22.AddChildren(p23)
 	*/
-	pm.WriteToCSV()
+	pm.WriteToCSV("data")
 }
 
 func main() {

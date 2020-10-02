@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -80,8 +81,9 @@ func PersonToRowEntry(p Person) []string {
 }
 
 // WriteToCSV write all entries in PeopleManager into a csv file named people.csv
-func (pm PeopleManager) WriteToCSV() error {
-	f, err := os.Create("people.csv")
+func (pm PeopleManager) WriteToCSV(savePath string) error {
+	csvFile := filepath.Join(savePath, "people.csv")
+	f, err := os.Create(csvFile)
 	defer f.Close()
 	if err != nil {
 		fmt.Println("Error: ", err)
