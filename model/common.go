@@ -21,6 +21,7 @@ const (
 	ParentRole Role = iota
 	SpouseRole
 	ChildRole
+	NilRole
 )
 
 // PersoRela is a map (dictionary) storing all the relations (with other people) of each person

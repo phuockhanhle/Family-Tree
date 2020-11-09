@@ -178,3 +178,16 @@ func DistanceGeneration(p1 *Person, p2 *Person) int {
 func Distance(p1 *Person, p2 *Person) int {
 	return DistanceGeneration(p1, p2) + RankOfSameRoot(p1, p2)
 }
+
+func GetRelation(p_source *Person, p_dest *Person) Role {
+	if p_source.Dad == p_dest || p_source.Mom == p_dest {
+		return ChildRole
+	}
+	if p_dest.Dad == p_source || p_dest.Mom == p_source {
+		return ParentRole
+	}
+	if PersonAlreadyInList(p_source, p_dest.Spouse) {
+		return SpouseRole
+	}
+	return NilRole
+}

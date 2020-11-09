@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	model "github.com/phuockhanhle/familytree/model"
 )
 
@@ -64,12 +66,70 @@ func exemple() {
 		p21.AddChildren(p22)
 		p22.AddChildren(p23)
 	*/
-	pm.WriteToCSV("data")
+	model.Connect_database()
+	model.Insert_person(pm.AllPeople[1])
+	model.Insert_person(pm.AllPeople[0])
+	model.Insert_person(pm.AllPeople[2])
+
+	model.Insert_relation(pm.AllPeople[1], pm.AllPeople[0])
+	model.Insert_relation(pm.AllPeople[1], pm.AllPeople[2])
+
+	//model.Clear_tables()
+	//pm.WriteToCSV("data")
+}
+
+func exemple_database() {
+	var p1 model.Person
+	p1.FirstName = "Phuoc Khanh"
+	p1.LastName = "LE"
+	p1.Gender = model.Male
+
+	var p2 model.Person
+	p2.FirstName = "Phuoc Long"
+	p2.LastName = "LE"
+	p2.Gender = model.Male
+
+	var p3 model.Person
+	p3.FirstName = "Kim Thai"
+	p3.LastName = "LE"
+	p3.Gender = model.Male
+
+	var p4 model.Person
+	p4.FirstName = "Tran"
+	p4.LastName = "Dinh Lien Khuong"
+	p4.Gender = model.Female
+
+	p1.Dad = &p3
+	p1.Mom = &p4
+	p2.Dad = &p3
+	p2.Mom = &p4
+	p3.Spouse = append(p3.Spouse, &p4)
+	p4.Spouse = append(p4.Spouse, &p3)
+
+	model.Connect_database()
+	/*
+		model.Insert_person(&p1)
+		model.Insert_person(&p2)
+		model.Insert_person(&p3)
+		model.Insert_person(&p4)
+
+		model.Insert_relation(&p1, &p2)
+		model.Insert_relation(&p3, &p1)
+		model.Insert_relation(&p1, &p4)
+		model.Insert_relation(&p4, &p3)
+	*/
+	var AllPeople []*model.Person
+	AllPeople, _ = model.GetAllPeople()
+
+	for i := 0; i < 4; i++ {
+		fmt.Println(AllPeople[i].FirstName)
+	}
+
 }
 
 func main() {
 	//run exemple() to create file csv with people
-	exemple()
+	exemple_database()
 	/*
 		pm := &(model.PM)
 
@@ -117,4 +177,5 @@ func main() {
 			fmt.Println(tmp.AllPeople[i].Ten)
 		}
 	*/
+
 }
