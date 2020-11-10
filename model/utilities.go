@@ -46,37 +46,31 @@ func PersonAlreadyInList(p *Person, listP []*Person) bool {
 }
 
 // GetRoot returns the roots of the family trees that a person belongs to
-func GetRoot(p *Person) []*Person {
-	var res []*Person
-	if p != nil {
-		if p.IsRoot() {
-			res = append(res, p)
-		}
-		if p.Dad != nil {
-			res = append(res, GetRoot(p.Dad)...)
-		}
-		if p.Mom != nil {
-			res = append(res, GetRoot(p.Mom)...)
-		}
-	}
-	return res
+func GetRoots(p *Person) []int {
+	return p.Trees.GetRoots()
 }
 
 // IsSameRoot returns if 2 people have the same root, and the first common root of them
 // Chuyen thanh map -> O(m+n)
-func IsSameRoot(p1 *Person, p2 *Person) bool {
-	for _, rootP1 := range GetRoot(p1) {
-		for _, rootP2 := range GetRoot(p2) {
-			if IsSamePerson(rootP1, rootP2) {
-				return true
-			}
+func HasCommonElements(l1, l2 []int) bool {
+	var dict = make(map[int]bool, len(l1))
+	for _, elm := range l1 {
+		dict[elm] = true
+	}
+	for _, elm := range l2 {
+		if _, elmExisted := dict[elm]; elmExisted {
+			return false
 		}
 	}
 	return false
 }
 
-// TraceOrigins calls FindFirstSameRoot and considers the result to generate its return
-func TraceOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
+func IsSameRoot(p1, p2 *Person) bool {
+	return HasCommonElements(GetRoots(p1), GetRoots(p2))
+}
+
+// trackOrigins calls FindFirstSameRoot and considers the result to generate its return
+func trackOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	root, directAncestorsP1, directAncestorsP2 := FindFirstSameRoot(p1, p2)
 	if root == nil {
 		return nil, nil, nil
@@ -89,9 +83,9 @@ func TraceOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 
 // FindFirstSameRoot returns:
 // 	- the first (closest) common root of both people
-//	- trace back from the common root to p1
-//	- trace back from the common root to p
-// FindFirstSameRoot is the carrier, calling TraceOrigins to consider different conditions for its return
+//	- track back from the common root to p1
+//	- track back from the common root to p
+// FindFirstSameRoot is the carrier, calling trackOrigins to consider different conditions for its return
 func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	if IsSameRoot(p1, p2) == false {
 		return nil, nil, nil
@@ -101,14 +95,14 @@ func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 		case p1.Rank == p2.Rank:
 			for _, p1Parent := range []*Person{p1.Dad, p1.Mom} {
 				for _, p2Parent := range []*Person{p2.Dad, p2.Mom} {
-					if root, directAncestorsP1, directAncestorsP2 := TraceOrigins(p1Parent, p2Parent); root != nil {
+					if root, directAncestorsP1, directAncestorsP2 := trackOrigins(p1Parent, p2Parent); root != nil {
 						return root, directAncestorsP1, directAncestorsP2
 					}
 				}
 			}
 		case p1.Rank > p2.Rank:
 			for _, p1Parent := range []*Person{p1.Dad, p1.Mom} {
-				if root, directAncestorsP1, directAncestorsP2 := TraceOrigins(p1Parent, p2); root != nil {
+				if root, directAncestorsP1, directAncestorsP2 := trackOrigins(p1Parent, p2); root != nil {
 					return root, directAncestorsP1, directAncestorsP2
 				}
 			}
@@ -161,9 +155,15 @@ func RankOfSameRoot(p1 *Person, p2 *Person) int {
 }*/
 
 // RankOfSameRoot computes the how much different 2 people are at their first common rank (min is chosen)
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
 func RankOfSameRoot(p1 *Person, p2 *Person) int {
 	if root, _, _ := FindFirstSameRoot(p1, p2); root != nil {
-		return int(math.Min(float64(DistanceGeneration(p1, root)), float64(DistanceGeneration(p2, root))))
+		return min(DistanceGeneration(p1, root), DistanceGeneration(p2, root))
 	}
 	return DefaultRank
 }

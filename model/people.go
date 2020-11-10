@@ -19,6 +19,7 @@ type Person struct {
 	Mom       *Person
 	Spouse    []*Person
 	Children  []*Person
+	Trees     *TreeGroups
 }
 
 // GetDadID returns Id of the father of person p
@@ -84,6 +85,8 @@ func (p *Person) AddChildren(c *Person) {
 func (p Person) IsRoot() bool {
 	return p.Dad == nil && p.Mom == nil
 }
+
+//----------------------------------------------------------------------------------------------------------------
 
 // PersonJSONForm is a convenient way to form the family trees
 type PersonJSONForm struct {
