@@ -1,5 +1,6 @@
 package model
 
+/*
 import (
 	"encoding/csv"
 	"errors"
@@ -167,3 +168,4 @@ func (pm *PeopleManager) ReadFromCSV() {
 		}
 	}
 }
+*/

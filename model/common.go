@@ -38,4 +38,4 @@ const (
 )
 
 // PM is common instance of PeopleManager across the model package
-var PM PeopleManager
+//var PM PeopleManager

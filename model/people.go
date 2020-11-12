@@ -1,7 +1,6 @@
 package model
 
 import (
-	"errors"
 	"time"
 )
 
@@ -15,27 +14,9 @@ type Person struct {
 	Birthday  time.Time
 	Deathday  time.Time
 	Rank      int
-	Dad       *Person
-	Mom       *Person
-	Spouse    []*Person
-	Children  []*Person
+	Spouse    []int
+	Children  []int
 	Trees     *TreeGroups
-}
-
-// GetDadID returns Id of the father of person p
-func (p Person) GetDadID() int {
-	if p.Dad == nil {
-		return IDNotFound
-	}
-	return p.Dad.ID
-}
-
-// GetMomID returns Id of the mother of person p
-func (p Person) GetMomID() int {
-	if p.Mom == nil {
-		return IDNotFound
-	}
-	return p.Mom.ID
 }
 
 // GetAge returns the current age of person p
@@ -55,18 +36,7 @@ func (p *Person) UpdateRank(fromPerson *Person, role Role) {
 	}
 }
 
-// AddParent add dad/mom to the current person depending on the gender of added parent
-func (p *Person) AddParent(parent *Person) error {
-	if parent.Gender == Male {
-		p.Dad = parent
-	} else if parent.Gender == Female {
-		p.Mom = parent
-	} else {
-		return errors.New("parent's gender is undefined")
-	}
-	return nil
-}
-
+/*
 // AddSpouse add new spouse to list of spouse
 func (p *Person) AddSpouse(s *Person) {
 	if PersonAlreadyInList(s, p.Spouse) == false {
@@ -80,12 +50,7 @@ func (p *Person) AddChildren(c *Person) {
 		p.Children = append(p.Children, c)
 	}
 }
-
-// IsRoot returns whether a person is the root of a whole family (tree)
-func (p Person) IsRoot() bool {
-	return p.Dad == nil && p.Mom == nil
-}
-
+*/
 //----------------------------------------------------------------------------------------------------------------
 
 // PersonJSONForm is a convenient way to form the family trees
@@ -95,6 +60,7 @@ type PersonJSONForm struct {
 }
 
 // ToJSONForm extracts useful information for PersonJSONForm from Person
+/*
 func (p Person) ToJSONForm() *PersonJSONForm {
 	res := PersonJSONForm{ID: p.ID}
 	for _, c := range p.Children {
@@ -103,3 +69,4 @@ func (p Person) ToJSONForm() *PersonJSONForm {
 	}
 	return &res
 }
+*/

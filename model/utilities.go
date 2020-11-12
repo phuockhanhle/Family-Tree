@@ -1,6 +1,7 @@
 package model
 
 import (
+	"log"
 	"math"
 	"strconv"
 	"time"
@@ -36,9 +37,20 @@ func IsSamePerson(p1 *Person, p2 *Person) bool {
 }
 
 // PersonAlreadyInList check if a person is already in list of people
+/*
 func PersonAlreadyInList(p *Person, listP []*Person) bool {
 	for _, pInList := range listP {
 		if IsSamePerson(p, pInList) {
+			return true
+		}
+	}
+	return false
+}
+*/
+
+func PersonAlreadyInList(ID_person int, list_ID []int) bool {
+	for _, ID := range list_ID {
+		if ID == ID_person {
 			return true
 		}
 	}
@@ -86,6 +98,7 @@ func trackOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 //	- track back from the common root to p1
 //	- track back from the common root to p
 // FindFirstSameRoot is the carrier, calling trackOrigins to consider different conditions for its return
+/*
 func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	if IsSameRoot(p1, p2) == false {
 		return nil, nil, nil
@@ -112,6 +125,7 @@ func FindFirstSameRoot(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	}
 	return p1, nil, nil
 }
+*/
 
 /*
 func RankOfSameRoot(p1 *Person, p2 *Person) int {
@@ -180,14 +194,29 @@ func Distance(p1 *Person, p2 *Person) int {
 }
 
 func GetRelation(p_source *Person, p_dest *Person) Role {
-	if p_source.Dad == p_dest || p_source.Mom == p_dest {
+	if PersonAlreadyInList(p_source.ID, p_dest.Children) {
 		return ChildRole
 	}
-	if p_dest.Dad == p_source || p_dest.Mom == p_source {
+	if PersonAlreadyInList(p_dest.ID, p_source.Children) {
 		return ParentRole
 	}
-	if PersonAlreadyInList(p_source, p_dest.Spouse) {
+	if PersonAlreadyInList(p_source.ID, p_dest.Spouse) {
 		return SpouseRole
 	}
 	return NilRole
+}
+
+func Addrelation(p_source *Person, p_dest *Person, relaRole Role) {
+	if p_source == nil || p_dest == nil {
+		log.Println("argument null")
+	}
+	switch relaRole {
+	case ParentRole:
+		p_source.Children = append(p_source.Children, p_dest.ID)
+	case ChildRole:
+		p_dest.Children = append(p_dest.Children, p_source.ID)
+	case SpouseRole:
+		p_dest.Spouse = append(p_dest.Spouse, p_source.ID)
+		p_dest.Spouse = append(p_source.Spouse, p_dest.ID)
+	}
 }
