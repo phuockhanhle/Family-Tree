@@ -31,6 +31,30 @@ func GetIdByName(FirstName string, LastName string) (int, error) {
 	return id, nil
 }
 
+func GetAllRoot() ([]int, error) {
+	rows, err := selectAllRoot.Query()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return nil, nil
+	}
+
+	var res []int
+	for {
+		var tmp int
+		err = rows.Scan(&tmp)
+		res = append(res, tmp)
+		if !rows.Next() {
+			break
+		}
+	}
+	return res, nil
+}
+
 func Clear_tables() {
 	var clearTablePerson *sql.Stmt
 	var clearTableRelation *sql.Stmt
