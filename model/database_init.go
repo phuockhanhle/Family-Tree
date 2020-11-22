@@ -17,6 +17,8 @@ var selectParentsPerson *sql.Stmt
 var selectSpousesPerson *sql.Stmt
 var selectChildrenPerson *sql.Stmt
 var selectAllRoot *sql.Stmt
+var selectPersonById *sql.Stmt
+var selectNumberPerson *sql.Stmt
 
 // prepared statements for insert
 var insertPerson *sql.Stmt
@@ -55,6 +57,9 @@ func Connect_database() {
 
 	selectAllRoot, err = db.Prepare("select P.ID_person from Person P LEFT JOIN Relation R on R.ID_dest = P.ID_person WHERE R.ID_dest IS NULL OR type = 'spousal'")
 
+	selectPersonById, err = db.Prepare("select * from Person P WHERE P.ID_person = ? ")
+
+	selectNumberPerson, err = db.Prepare("select count(*) from Person")
 	if err != nil {
 		log.Fatal(err)
 	}

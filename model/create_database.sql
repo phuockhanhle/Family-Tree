@@ -1,15 +1,9 @@
 SET SQL_MODE='ALLOW_INVALID_DATES';
 
 DROP TABLE Relation;
+DROP TABLE Tree;
 DROP TABLE Person;
 
-CREATE TABLE IF NOT EXISTS TreeGroup {
-    ID_TreeGroup int NOT NULL PRIMARY KEY,
-    ID_FatherTree int,
-    ID_MotherTree int,
-    IDs_InheritFather VARCHAR,
-    IDs_InheritMother VARCHAR
-}
 
 CREATE TABLE IF NOT EXISTS Person (
     ID_person INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -20,8 +14,8 @@ CREATE TABLE IF NOT EXISTS Person (
     Rank INT NOT NULL,
     Birthday TIMESTAMP,
     Deathday TIMESTAMP,
-    ID_TreeGroup INT NOT NULL,
-    FOREIGN KEY (ID_TreeGroup) REFERENCES TreeGroup(ID_TreeGroup)
+    ID_FatherTree int,
+    ID_MotherTree int
 ) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS Relation (
@@ -33,16 +27,8 @@ CREATE TABLE IF NOT EXISTS Relation (
     PRIMARY KEY(ID_source,ID_dest)    
 );
 
-CREATE TABLE IF NOT EXISTS Tree {
+CREATE TABLE IF NOT EXISTS Tree (
     ID_tree int NOT NULL PRIMARY KEY,
     ID_root int NOT NULL,
-    FOREIGN KEY(ID_root) REFERENCES Person(ID_person)
-}
-
-CREATE TABLE IF NOT EXISTS TreeGroup {
-    ID_TreeGroup int NOT NULL PRIMARY KEY,
-    ID_FatherTree int,
-    ID_MotherTree int,
-    IDs_InheritFather VARCHAR,
-    IDs_InheritMother VARCHAR
-}
+    FOREIGN KEY (ID_root) REFERENCES Person(ID_person)
+);
