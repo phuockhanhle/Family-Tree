@@ -18,7 +18,7 @@ func Insert_person(p *Person) error {
 func Insert_1st_person(p *Person) error {
 	err := Insert_person(p)
 
-	err = createFirstTree()
+	err = InsertTree(1)
 
 	err = SetFatherTree(1, 1)
 
@@ -54,12 +54,14 @@ func Insert_nth_person(p_old *Person, p_new *Person) {
 			_ = SetFatherTree(ID_new, ID_father_tree)
 			_ = UpdateTreeRoot(ID_father_tree, ID_new)
 		} else {
-			id_tree, _ := InsertTree(ID_new)
+			_ = InsertTree(ID_new)
+			id_tree := GetIdTreeByRoot(ID_new)
 			_ = SetFatherTree(ID_new, id_tree)
 			_ = SetMotherTree(ID_old, id_tree)
 		}
 	case SpouseRole:
-		id_tree, _ := InsertTree(ID_new)
+		_ = InsertTree(ID_new)
+		id_tree := GetIdTreeByRoot(ID_new)
 		_ = SetFatherTree(ID_new, id_tree)
 	}
 }

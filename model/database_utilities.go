@@ -93,34 +93,112 @@ func isPersonEmpty() bool {
 }
 
 func SetFatherTree(ID_person int, ID_tree int) error {
+	_, err := updateFatherTree.Exec(ID_tree, ID_person)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return nil
 }
 
 func SetMotherTree(ID_person int, ID_tree int) error {
+	_, err := updateMotherTree.Exec(ID_tree, ID_person)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return nil
 }
 
-func createFirstTree() error {
-	return nil
-}
+//func createFirstTree() error {
+//	return nil
+//}
 
 func GetIdFatherTree(id_person int) (int, error) {
-	var id_tree int
-	return id_tree, nil
+	rows, err := selectFatherTreePerson.Query(id_person)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return -1, nil
+	}
+
+	var res int
+	err = rows.Scan(&res)
+
+	return res, nil
 }
 
 func GetIdMotherTree(id_person int) (int, error) {
-	var id_tree int
-	return id_tree, nil
+	rows, err := selectMotherTreePerson.Query(id_person)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return -1, nil
+	}
+
+	var res int
+	err = rows.Scan(&res)
+
+	return res, nil
 }
 
 func UpdateTreeRoot(id_tree int, id_root int) error {
+	_, err := updateTreeRootID.Exec(id_root, id_tree)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return nil
 }
 
-func InsertTree(id_root int) (int, error) {
-	var id_newest_tree int
-	return id_newest_tree, nil
+func InsertTree(id_root int) error {
+	_, err := insertTree.Exec(id_root)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
+func GetIdTreeByRoot(id_root int) int {
+	rows, err := selectIdTreeByRoot.Query(id_root)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return -1
+	}
+
+	var res int
+	err = rows.Scan(&res)
+
+	return res
+}
+
+func GetRootByIdTree(id_tree int) int {
+	rows, err := selectRootByIdTree.Query(id_tree)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return -1
+	}
+
+	var res int
+	err = rows.Scan(&res)
+
+	return res
 }
 
 func Clear_tables() {
