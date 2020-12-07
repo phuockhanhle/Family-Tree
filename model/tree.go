@@ -102,6 +102,7 @@ func (g *TreeGroups) GetRoots() []int {
 	return roots
 }
 
+/*
 func buildTreeGroups(TM *TreesManager) {
 
 	for _, tree := range TM.AllTrees {
@@ -109,3 +110,4 @@ func buildTreeGroups(TM *TreesManager) {
 	}
 
 }
+*/

@@ -12,10 +12,11 @@ CREATE TABLE IF NOT EXISTS Person (
     NickName VARCHAR (50),
     Gender ENUM('M','F') NOT NULL,
     Rank INT NOT NULL,
-    Birthday TIMESTAMP,
-    Deathday TIMESTAMP,
+    Birthday DATE,
+    Deathday DATE,
     ID_FatherTree int,
-    ID_MotherTree int
+    ID_MotherTree int,
+    UNIQUE(FirstName,LastName,Birthday)
 ) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS Relation (

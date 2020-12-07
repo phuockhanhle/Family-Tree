@@ -82,6 +82,7 @@ func IsSameRoot(p1, p2 *Person) bool {
 }
 
 // trackOrigins calls FindFirstSameRoot and considers the result to generate its return
+/*
 func trackOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	root, directAncestorsP1, directAncestorsP2 := FindFirstSameRoot(p1, p2)
 	if root == nil {
@@ -92,6 +93,7 @@ func trackOrigins(p1 *Person, p2 *Person) (*Person, []*Person, []*Person) {
 	}
 	return root, append(directAncestorsP1, p1), append(directAncestorsP2, p2)
 }
+*/
 
 // FindFirstSameRoot returns:
 // 	- the first (closest) common root of both people
@@ -175,13 +177,15 @@ func min(a, b int) int {
 	}
 	return b
 }
+
+/*
 func RankOfSameRoot(p1 *Person, p2 *Person) int {
 	if root, _, _ := FindFirstSameRoot(p1, p2); root != nil {
 		return min(DistanceGeneration(p1, root), DistanceGeneration(p2, root))
 	}
 	return DefaultRank
 }
-
+*/
 // DistanceGeneration computes the difference of 2 people's rank (abs value)
 func DistanceGeneration(p1 *Person, p2 *Person) int {
 	return int(math.Abs(float64(p1.Rank - p2.Rank)))
@@ -189,10 +193,11 @@ func DistanceGeneration(p1 *Person, p2 *Person) int {
 
 // Distance is a metric to help visualize people with "vertical" rank and also considering "horizontal" rank
 //TODO: to be discussed
+/*
 func Distance(p1 *Person, p2 *Person) int {
 	return DistanceGeneration(p1, p2) + RankOfSameRoot(p1, p2)
 }
-
+*/
 func GetRelation(p_source *Person, p_dest *Person) Role {
 	if PersonAlreadyInList(p_source.ID, p_dest.Children) {
 		return ChildRole

@@ -1,18 +1,18 @@
 package main
 
 import (
-	"fmt"
-
 	model "github.com/phuockhanhle/familytree/model"
 )
 
 func exemple() {
-	pm := model.PeopleManager{}
+	/*
+		pm := model.PeopleManager{}
 
-	p1 := pm.AddNewPerson("Phuoc Khanh", "Le", model.Male)
-	p3 := pm.AddNewPerson("Kim Thai", "Le", model.Male)
-	p2 := pm.AddNewPerson("Phuoc Long", "Le", model.Male)
-	p4 := pm.AddNewPerson("Lien Khuong", "Tran Dinh", model.Female)
+		p1 := pm.AddNewPerson("Phuoc Khanh", "Le", model.Male)
+		p3 := pm.AddNewPerson("Kim Thai", "Le", model.Male)
+		p2 := pm.AddNewPerson("Phuoc Long", "Le", model.Male)
+		p4 := pm.AddNewPerson("Lien Khuong", "Tran Dinh", model.Female)
+	*/
 	/*
 		p5 := pm.AddNewPerson("Khoi", "Tran Dinh", 'm')
 		p6 := pm.AddNewPerson("Diem Chi", "Tran Dinh", 'f')
@@ -38,9 +38,11 @@ func exemple() {
 
 		p24 := pm.AddNewPerson("Ba co", "Nguyen", 'f')
 	*/
-	pm.AddNewRelation(p1.ID, p3.ID, model.ChildRole)
-	pm.AddNewRelation(p3.ID, p2.ID, model.ParentRole)
-	pm.AddNewRelation(p3.ID, p4.ID, model.SpouseRole)
+	/*
+		pm.AddNewRelation(p1.ID, p3.ID, model.ChildRole)
+		pm.AddNewRelation(p3.ID, p2.ID, model.ParentRole)
+		pm.AddNewRelation(p3.ID, p4.ID, model.SpouseRole)
+	*/
 	/*
 		p1.AddDad(p3)
 		p3.AddChildren(p2)
@@ -66,65 +68,48 @@ func exemple() {
 		p21.AddChildren(p22)
 		p22.AddChildren(p23)
 	*/
-	model.Connect_database()
-	model.Insert_person(pm.AllPeople[1])
-	model.Insert_person(pm.AllPeople[0])
-	model.Insert_person(pm.AllPeople[2])
+	/*
+		model.Connect_database()
+		model.Insert_person(pm.AllPeople[1])
+		model.Insert_person(pm.AllPeople[0])
+		model.Insert_person(pm.AllPeople[2])
 
-	model.Insert_relation(pm.AllPeople[1], pm.AllPeople[0])
-	model.Insert_relation(pm.AllPeople[1], pm.AllPeople[2])
+		model.Insert_relation(pm.AllPeople[1], pm.AllPeople[0])
+		model.Insert_relation(pm.AllPeople[1], pm.AllPeople[2])
+	*/
 
 	//model.Clear_tables()
 	//pm.WriteToCSV("data")
 }
 
 func exemple_database() {
-	var p1 model.Person
-	p1.FirstName = "Phuoc Khanh"
-	p1.LastName = "LE"
-	p1.Gender = model.Male
-
-	var p2 model.Person
-	p2.FirstName = "Phuoc Long"
-	p2.LastName = "LE"
-	p2.Gender = model.Male
-
-	var p3 model.Person
-	p3.FirstName = "Kim Thai"
-	p3.LastName = "LE"
-	p3.Gender = model.Male
-
-	var p4 model.Person
-	p4.FirstName = "Tran"
-	p4.LastName = "Dinh Lien Khuong"
-	p4.Gender = model.Female
-
-	p1.Dad = &p3
-	p1.Mom = &p4
-	p2.Dad = &p3
-	p2.Mom = &p4
-	p3.Spouse = append(p3.Spouse, &p4)
-	p4.Spouse = append(p4.Spouse, &p3)
-
-	model.Connect_database()
+	var p1, p2, p3, p4 model.Person
+	p1 = model.Person{FirstName: "Phuoc Khanh", LastName: "LE", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1998-04-04T00:00:00.000Z")}
+	p2 = model.Person{FirstName: "Phuoc Long", LastName: "LE", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1992-02-04T00:00:00.000Z")}
+	p3 = model.Person{FirstName: "Kim Thai", LastName: "LE", Gender: model.Male, Rank: -1, Birthday: model.StringToTime("1964-04-19T00:00:00.000Z")}
+	p4 = model.Person{FirstName: "Dinh Lien Khuong", LastName: "Tran", Gender: model.Female, Rank: -1, Birthday: model.StringToTime("1966-03-15T00:00:00.000Z")}
 	/*
-		model.Insert_person(&p1)
-		model.Insert_person(&p2)
-		model.Insert_person(&p3)
-		model.Insert_person(&p4)
-
-		model.Insert_relation(&p1, &p2)
-		model.Insert_relation(&p3, &p1)
-		model.Insert_relation(&p1, &p4)
-		model.Insert_relation(&p4, &p3)
+		p5 = model.Person{FirstName: "Dinh Khoi", LastName: "Tran", Gender: model.Male, Rank: -2}
+		p6 = model.Person{FirstName: "Diem Chi", LastName: "LE", Gender: model.Female, Rank: -1}
+		p7 = model.Person{FirstName: "Thanh Phuong", LastName: "Dinh", Gender: model.Male, Rank: -1}
+		p8 = model.Person{FirstName: "Thanh Trung", LastName: "Dinh", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1996-12-28")}
+		p9 = model.Person{FirstName: "Thao Nhi", LastName: "Dinh", Gender: model.Female, Rank: 0, Birthday: model.StringToTime("2000-10-24")}
 	*/
-	var AllPeople []*model.Person
-	AllPeople, _ = model.GetAllPeople()
+	model.Connect_database()
+	model.Insert_1st_person(&p1)
 
-	for i := 0; i < 4; i++ {
-		fmt.Println(AllPeople[i].FirstName)
-	}
+	p3.Children = append(p3.Children, model.GetIdByInfo_(p1))
+	model.Insert_nth_person(&p1, &p3)
 
+	p3.Children = append(p3.Children, model.GetNumberPerson()+1)
+	model.Insert_nth_person(&p3, &p2)
+
+	p4.Children = append(p4.Children, model.GetIdByInfo_(p2))
+	model.Insert_nth_person(&p2, &p4)
+
+	p4.Children = append(p4.Children, model.GetIdByInfo_(p1))
+	model.MakeRelationBetweenPeopleAlreadyInDB(model.GetIdByInfo_(p1), model.GetIdByInfo_(p4), model.ChildRole)
+	model.MakeRelationBetweenPeopleAlreadyInDB(model.GetIdByInfo_(p3), model.GetIdByInfo_(p4), model.SpouseRole)
 }
 
 func main() {

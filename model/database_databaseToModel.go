@@ -111,3 +111,43 @@ func UpdateRelationFromDB(p *Person) {
 	p.Children, _ = GetChildrenFromDatabase(p)
 	p.Spouse, _ = GetSpousesFromDatabase(p)
 }
+
+func GetPersonById(ID_person int) (*Person, error) {
+	rows, err := selectPersonById.Query(ID_person)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return nil, nil
+	}
+	var res Person
+	var ID string
+	var FirstName string
+	var LastName string
+	var NickName string
+	var Rank string
+	var Birthday string
+	var Deathday string
+	var Gender string
+
+	err = rows.Scan(&ID, &FirstName, &LastName,
+		&NickName, &Gender, &Rank,
+		&Birthday, &Deathday)
+
+	res.ID = StringToInt(ID)
+	res.FirstName = FirstName
+	res.LastName = LastName
+	res.NickName = NickName
+	res.Rank = StringToInt(Rank)
+	if Gender == "M" {
+		res.Gender = Male
+	} else {
+		res.Gender = Female
+	}
+	res.Birthday = StringToTime(Birthday)
+	res.Deathday = StringToTime(Deathday)
+	return &res, nil
+}

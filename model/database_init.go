@@ -11,7 +11,7 @@ import (
 var db *sql.DB
 
 // prepared statements for select
-var selectIDByName *sql.Stmt
+var selectIDByInfo *sql.Stmt
 var selectAllPeople *sql.Stmt
 var selectParentsPerson *sql.Stmt
 var selectSpousesPerson *sql.Stmt
@@ -37,7 +37,7 @@ var insertRelation *sql.Stmt
 var insertTree *sql.Stmt
 
 func Connect_database() {
-	db, err := sql.Open("mysql", "root:MeoMeo123!@#@(localhost:3306)/family_tree")
+	db, err := sql.Open("mysql", "root:MeoMeo123!@#@(localhost:3306)/family_tree?parseTime=true")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -47,13 +47,14 @@ func Connect_database() {
 		log.Fatal(err)
 	}
 
-	insertPerson, err = db.Prepare("INSERT INTO Person(FirstName,LastName,Gender,Rank) VALUES (?, ?, ?, ?)")
+	insertPerson, err = db.Prepare("INSERT INTO Person(FirstName,LastName,Gender,Rank,Birthday) VALUES (?, ?, ?, ?, ?)")
 
+	insertTree, err = db.Prepare("INSERT INTO Tree(ID_root) VALUES (?) ")
 	//create prepared statement for inserting a relation
 	insertRelation, err = db.Prepare("INSERT INTO Relation(ID_source,ID_dest,type) VALUES (?, ?, ?)")
 
 	//create prepared statement for getting ID of a Person by name
-	selectIDByName, err = db.Prepare("SELECT ID_person FROM Person WHERE FirstName = ? And LastName = ? ")
+	selectIDByInfo, err = db.Prepare("SELECT ID_person FROM Person WHERE FirstName = ? And LastName = ? And Birthday = ?")
 
 	//create prepared statement for getting all people from database
 	selectAllPeople, err = db.Prepare("SELECT * from Person")
@@ -69,7 +70,7 @@ func Connect_database() {
 
 	selectAllRoot, err = db.Prepare("select P.ID_person from Person P LEFT JOIN Relation R on R.ID_dest = P.ID_person WHERE R.ID_dest IS NULL OR type = 'spousal'")
 
-	selectPersonById, err = db.Prepare("select * from Person P WHERE P.ID_person = ? ")
+	selectPersonById, err = db.Prepare("select ID_person,FirstName,LastName,NickName, Gender, Rank, Birthday, Deathday from Person P WHERE P.ID_person = ? ")
 
 	selectNumberPerson, err = db.Prepare("select count(*) from Person")
 
@@ -78,8 +79,6 @@ func Connect_database() {
 	updateMotherTree, err = db.Prepare("UPDATE Person SET ID_motherTree = ? WHERE ID_person = ? ")
 
 	updateTreeRootID, err = db.Prepare("UPDATE Tree SET ID_root = ? WHERE ID_tree = ?")
-
-	insertTree, err = db.Prepare("INSERT INTO TREE(ID_root) values ?")
 
 	selectIdTreeByRoot, err = db.Prepare("SELECT ID_tree from Tree WHERE ID_root = ?")
 

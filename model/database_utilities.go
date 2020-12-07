@@ -3,32 +3,38 @@ package model
 import (
 	"database/sql"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 //------------------------ from model to database --------------------
 
-func GetIdByName(FirstName string, LastName string) (int, error) {
-	id_row, err := selectIDByName.Query(FirstName, LastName)
+// GetIdByInfo return id of a person by Lastname, FirstName and Birthday which are unique by person
+func GetIdByInfo(FirstName string, LastName string, Birthday time.Time) int {
+	id_row, err := selectIDByInfo.Query(FirstName, LastName, TimeToString(Birthday)[0:10])
 	if err != nil {
 		log.Println("query error", err)
-		return 0, err
+		return 0
 	}
 
 	defer id_row.Close()
 
 	if !id_row.Next() {
-		return 0, nil
+		return 0
 	}
 
 	var id int
 	err = id_row.Scan(&id)
 	if err != nil {
 		log.Println("scan error", err)
-		return 0, err
+		return 0
 	}
-	return id, nil
+	return id
+}
+
+func GetIdByInfo_(p Person) int {
+	return GetIdByInfo(p.FirstName, p.LastName, p.Birthday)
 }
 
 func GetAllRoot() ([]int, error) {
@@ -55,29 +61,14 @@ func GetAllRoot() ([]int, error) {
 	return res, nil
 }
 
-func GetPersonById(ID_person int) (*Person, error) {
-	rows, err := selectPersonById.Query(ID_person)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer rows.Close()
-
-	if !rows.Next() {
-		return nil, nil
-	}
-	var res *Person
-
-	err = rows.Scan(res.ID, res.FirstName, res.LastName,
-		res.NickName, res.Gender, res.Rank,
-		res.Birthday, res.Deathday)
-
-	return res, nil
-}
 func GetNumberPerson() int {
 	rows, _ := selectNumberPerson.Query()
 
 	defer rows.Close()
+
+	if !rows.Next() {
+		return -1
+	}
 
 	var id int
 	_ = rows.Scan(&id)
@@ -152,15 +143,6 @@ func UpdateTreeRoot(id_tree int, id_root int) error {
 	_, err := updateTreeRootID.Exec(id_root, id_tree)
 	if err != nil {
 		log.Fatal(err)
-	}
-	return nil
-}
-
-func InsertTree(id_root int) error {
-	_, err := insertTree.Exec(id_root)
-	if err != nil {
-		log.Println(err)
-		return err
 	}
 	return nil
 }
