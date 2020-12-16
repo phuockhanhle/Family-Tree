@@ -205,7 +205,8 @@ func GetRelation(p_source *Person, p_dest *Person) Role {
 	if PersonAlreadyInList(p_dest.ID, p_source.Children) {
 		return ParentRole
 	}
-	if PersonAlreadyInList(p_source.ID, p_dest.Spouse) {
+	if PersonAlreadyInList(p_source.ID, p_dest.Spouse) ||
+		PersonAlreadyInList(p_dest.ID, p_source.Spouse) {
 		return SpouseRole
 	}
 	return NilRole
@@ -222,6 +223,6 @@ func Addrelation(p_source *Person, p_dest *Person, relaRole Role) {
 		p_dest.Children = append(p_dest.Children, p_source.ID)
 	case SpouseRole:
 		p_dest.Spouse = append(p_dest.Spouse, p_source.ID)
-		p_dest.Spouse = append(p_source.Spouse, p_dest.ID)
+		p_source.Spouse = append(p_source.Spouse, p_dest.ID)
 	}
 }

@@ -8,7 +8,7 @@ import (
 
 func Insert_person(p *Person) error {
 	if p.Birthday.IsZero() {
-		_, err := insertPerson.Exec(p.FirstName, p.LastName, string(p.Gender), p.Rank, "0000-00-00")
+		_, err := insertPerson.Exec(p.FirstName, p.LastName, string(p.Gender), p.Rank, nil)
 		if err != nil {
 			log.Println(err)
 			return err
@@ -94,8 +94,8 @@ func Insert_relation(id_source int, id_dest int, type_relation Role) error {
 		}
 		return nil
 	case SpouseRole:
-		tmp, _ := GetPersonById(id_source)
-		if tmp.Gender == Male {
+		gender, _ := getGenderbyId(id_source)
+		if gender == Male {
 			return Insert_relation(id_dest, id_source, SpouseRole)
 		} else {
 			_, err := insertRelation.Exec(id_source, id_dest, "spousal")
@@ -109,7 +109,6 @@ func Insert_relation(id_source int, id_dest int, type_relation Role) error {
 		log.Println("not parental or spousal relations")
 		return nil
 	}
-
 	return nil
 }
 
@@ -121,11 +120,12 @@ func MakeRelationBetweenPeopleAlreadyInDB(id_source int, id_dest int, type_relat
 	switch type_relation {
 
 	case ChildRole:
-		tmp, _ := GetPersonById(id_dest)
-		if tmp.Gender == Female {
+		gender, _ := getGenderbyId(id_dest)
+		if gender == Female {
 			_ = SetMotherTree(id_source, ID_father_tree_dest)
 		} else {
-			_ = SetFatherTree(id_source, ID_father_tree_source)
+			_ = ChangeIdFatherTree(ID_father_tree_source, ID_father_tree_dest)
+			_ = DeleteTree(ID_father_tree_source)
 		}
 		return nil
 	case ParentRole:
@@ -147,4 +147,40 @@ func InsertTree(id_root int) error {
 		return err
 	}
 	return nil
+}
+
+func UpdateTreeParent(p_old *Person, p_new *Person) {
+	ID_new := GetIdByInfo(p_new.FirstName, p_new.LastName, p_new.Birthday)
+	ID_old := GetIdByInfo(p_old.FirstName, p_old.LastName, p_old.Birthday)
+
+	type_relation := GetRelation(p_new, p_old)
+	_ = Insert_relation(ID_new, ID_old, type_relation)
+
+	ID_father_tree, _ := GetIdFatherTree(ID_old)
+
+	switch GetRelation(p_new, p_old) {
+	case ChildRole:
+		if p_old.Gender == Male {
+			_ = SetFatherTree(ID_new, ID_father_tree)
+		} else {
+			_ = SetMotherTree(ID_new, ID_father_tree)
+			_ = InsertTree(ID_new)
+			_ = SetFatherTree(ID_new, GetIdTreeByRoot(ID_new))
+		}
+	case ParentRole:
+		if p_new.Gender == Male {
+			_ = SetFatherTree(ID_new, ID_father_tree)
+			_ = UpdateTreeRoot(ID_father_tree, ID_new)
+		} else {
+			_ = InsertTree(ID_new)
+			id_tree := GetIdTreeByRoot(ID_new)
+			_ = SetFatherTree(ID_new, id_tree)
+			_ = SetMotherTree(ID_old, id_tree)
+		}
+	case SpouseRole:
+		_ = InsertTree(ID_new)
+		id_tree := GetIdTreeByRoot(ID_new)
+		_ = SetFatherTree(ID_new, id_tree)
+	}
+
 }

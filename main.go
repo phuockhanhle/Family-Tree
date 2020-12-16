@@ -83,33 +83,61 @@ func exemple() {
 }
 
 func exemple_database() {
-	var p1, p2, p3, p4 model.Person
+	var p1, p2, p3, p4, p5, p6, p7, p8, p9 model.Person
 	p1 = model.Person{FirstName: "Phuoc Khanh", LastName: "LE", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1998-04-04T00:00:00.000Z")}
 	p2 = model.Person{FirstName: "Phuoc Long", LastName: "LE", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1992-02-04T00:00:00.000Z")}
 	p3 = model.Person{FirstName: "Kim Thai", LastName: "LE", Gender: model.Male, Rank: -1, Birthday: model.StringToTime("1964-04-19T00:00:00.000Z")}
 	p4 = model.Person{FirstName: "Dinh Lien Khuong", LastName: "Tran", Gender: model.Female, Rank: -1, Birthday: model.StringToTime("1966-03-15T00:00:00.000Z")}
-	/*
-		p5 = model.Person{FirstName: "Dinh Khoi", LastName: "Tran", Gender: model.Male, Rank: -2}
-		p6 = model.Person{FirstName: "Diem Chi", LastName: "LE", Gender: model.Female, Rank: -1}
-		p7 = model.Person{FirstName: "Thanh Phuong", LastName: "Dinh", Gender: model.Male, Rank: -1}
-		p8 = model.Person{FirstName: "Thanh Trung", LastName: "Dinh", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1996-12-28")}
-		p9 = model.Person{FirstName: "Thao Nhi", LastName: "Dinh", Gender: model.Female, Rank: 0, Birthday: model.StringToTime("2000-10-24")}
-	*/
+	p5 = model.Person{FirstName: "Dinh Khoi", LastName: "Tran", Gender: model.Male, Rank: -2}
+
+	p6 = model.Person{FirstName: "Dinh Diem Chi", LastName: "Tran", Gender: model.Female, Rank: -1}
+	p7 = model.Person{FirstName: "Thanh Phuong", LastName: "Dinh", Gender: model.Male, Rank: -1}
+	p8 = model.Person{FirstName: "Thanh Trung", LastName: "Dinh", Gender: model.Male, Rank: 0, Birthday: model.StringToTime("1996-12-28")}
+	p9 = model.Person{FirstName: "Thao Nhi", LastName: "Dinh", Gender: model.Female, Rank: 0, Birthday: model.StringToTime("2000-10-24")}
+
 	model.Connect_database()
 	model.Insert_1st_person(&p1)
 
-	p3.Children = append(p3.Children, model.GetIdByInfo_(p1))
+	model.Addrelation(&p1, &p3, model.ChildRole)
 	model.Insert_nth_person(&p1, &p3)
 
-	p3.Children = append(p3.Children, model.GetNumberPerson()+1)
-	model.Insert_nth_person(&p3, &p2)
+	model.Insert_person(&p2)
+	model.Addrelation(&p3, &p2, model.ParentRole)
+	model.UpdateTreeParent(&p3, &p2)
 
-	p4.Children = append(p4.Children, model.GetIdByInfo_(p2))
-	model.Insert_nth_person(&p2, &p4)
+	model.Insert_person(&p4)
+	model.Addrelation(&p2, &p4, model.ChildRole)
+	model.UpdateTreeParent(&p2, &p4)
 
-	p4.Children = append(p4.Children, model.GetIdByInfo_(p1))
+	model.Addrelation(&p4, &p1, model.ParentRole)
 	model.MakeRelationBetweenPeopleAlreadyInDB(model.GetIdByInfo_(p1), model.GetIdByInfo_(p4), model.ChildRole)
+
+	model.Addrelation(&p3, &p4, model.SpouseRole)
 	model.MakeRelationBetweenPeopleAlreadyInDB(model.GetIdByInfo_(p3), model.GetIdByInfo_(p4), model.SpouseRole)
+
+	model.Insert_person(&p5)
+	model.Addrelation(&p5, &p4, model.ParentRole)
+	model.UpdateTreeParent(&p4, &p5)
+
+	model.Insert_person(&p6)
+	model.Addrelation(&p5, &p6, model.ParentRole)
+	model.UpdateTreeParent(&p5, &p6)
+
+	model.Insert_person(&p7)
+	model.Addrelation(&p6, &p7, model.SpouseRole)
+	model.UpdateTreeParent(&p6, &p7)
+
+	model.Insert_person(&p8)
+	model.Addrelation(&p6, &p8, model.ParentRole)
+	model.UpdateTreeParent(&p6, &p8)
+
+	model.Insert_person(&p9)
+	model.Addrelation(&p6, &p9, model.ParentRole)
+	model.UpdateTreeParent(&p6, &p9)
+
+	model.MakeRelationBetweenPeopleAlreadyInDB(model.GetIdByInfo_(p8), model.GetIdByInfo_(p7), model.ChildRole)
+	model.MakeRelationBetweenPeopleAlreadyInDB(model.GetIdByInfo_(p9), model.GetIdByInfo_(p7), model.ChildRole)
+
 }
 
 func main() {

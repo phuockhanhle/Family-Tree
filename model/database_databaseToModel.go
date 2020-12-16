@@ -134,7 +134,7 @@ func GetPersonById(ID_person int) (*Person, error) {
 	var Gender string
 
 	err = rows.Scan(&ID, &FirstName, &LastName,
-		&NickName, &Gender, &Rank,
+		&NickName, Gender, &Rank,
 		&Birthday, &Deathday)
 
 	res.ID = StringToInt(ID)
@@ -142,6 +142,7 @@ func GetPersonById(ID_person int) (*Person, error) {
 	res.LastName = LastName
 	res.NickName = NickName
 	res.Rank = StringToInt(Rank)
+
 	if Gender == "M" {
 		res.Gender = Male
 	} else {

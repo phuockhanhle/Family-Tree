@@ -10,12 +10,12 @@ CREATE TABLE IF NOT EXISTS Person (
     FirstName VARCHAR (50) NOT NULL,
     LastName VARCHAR (50) NOT NULL,
     NickName VARCHAR (50),
-    Gender ENUM('M','F') NOT NULL,
+    Gender VARCHAR (50) NOT NULL,
     Rank INT NOT NULL,
     Birthday DATE,
     Deathday DATE,
-    ID_FatherTree int,
-    ID_MotherTree int,
+    ID_FatherTree INT,
+    ID_MotherTree INT,
     UNIQUE(FirstName,LastName,Birthday)
 ) AUTO_INCREMENT = 1;
 

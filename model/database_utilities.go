@@ -12,10 +12,14 @@ import (
 
 // GetIdByInfo return id of a person by Lastname, FirstName and Birthday which are unique by person
 func GetIdByInfo(FirstName string, LastName string, Birthday time.Time) int {
-	id_row, err := selectIDByInfo.Query(FirstName, LastName, TimeToString(Birthday)[0:10])
-	if err != nil {
-		log.Println("query error", err)
-		return 0
+
+	var id_row *sql.Rows
+	var err error
+
+	if Birthday.IsZero() {
+		id_row, err = selectIDByName.Query(FirstName, LastName)
+	} else {
+		id_row, err = selectIDByInfo.Query(FirstName, LastName, TimeToString(Birthday)[0:10])
 	}
 
 	defer id_row.Close()
@@ -83,6 +87,28 @@ func isPersonEmpty() bool {
 	}
 }
 
+func getGenderbyId(id_person int) (GenderType, error) {
+	rows, err := selectGenderById.Query(id_person)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	if !rows.Next() {
+		return NilType, nil
+	}
+
+	var gender string
+	err = rows.Scan(&gender)
+
+	if gender == "M" {
+		return Male, nil
+	} else {
+		return Female, nil
+	}
+}
+
 func SetFatherTree(ID_person int, ID_tree int) error {
 	_, err := updateFatherTree.Exec(ID_tree, ID_person)
 	if err != nil {
@@ -93,6 +119,14 @@ func SetFatherTree(ID_person int, ID_tree int) error {
 
 func SetMotherTree(ID_person int, ID_tree int) error {
 	_, err := updateMotherTree.Exec(ID_tree, ID_person)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return nil
+}
+
+func ChangeIdFatherTree(id_fatherTree_old int, id_fatherTree_new int) error {
+	_, err := updateFatherTreeByValueOfFatherTree.Exec(id_fatherTree_new, id_fatherTree_old)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -183,20 +217,10 @@ func GetRootByIdTree(id_tree int) int {
 	return res
 }
 
-func Clear_tables() {
-	var clearTablePerson *sql.Stmt
-	var clearTableRelation *sql.Stmt
-
-	clearTablePerson, err := db.Prepare("DELETE FROM Person")
+func DeleteTree(id_tree int) error {
+	_, err := deleteTree.Exec(id_tree)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	clearTableRelation, err = db.Prepare("DELETE FROM Relation")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	clearTableRelation.Exec()
-	clearTablePerson.Exec()
+	return nil
 }

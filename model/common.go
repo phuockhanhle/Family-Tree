@@ -35,6 +35,7 @@ type GenderType byte
 const (
 	Male   GenderType = 'M'
 	Female GenderType = 'F'
+	NilType
 )
 
 // PM is common instance of PeopleManager across the model package
