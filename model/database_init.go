@@ -68,7 +68,7 @@ func Connect_database() {
 	selectIDByName, err = db.Prepare("SELECT ID_person FROM Person WHERE FirstName = ? And LastName = ?")
 
 	//create prepared statement for getting all people from database
-	selectAllPeople, err = db.Prepare("SELECT * from Person")
+	selectAllPeople, err = db.Prepare("SELECT ID_person,FirstName,LastName,NickName, Gender, Rank, Birthday, Deathday from Person")
 
 	//create prepared statement for getting relation from database
 	selectParentsPerson, err = db.Prepare("SELECT R.ID_source FROM Person P, Relation R WHERE type = 'Parental' and R.ID_dest = ? ")

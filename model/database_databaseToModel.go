@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,24 +14,18 @@ func GetAllPeople() ([]*Person, error) {
 	}
 
 	defer rows.Close()
-
-	if !rows.Next() {
-		return nil, nil
-	}
-
-	var res []*Person
-	for {
-		var tmp Person
-
-		err = rows.Scan(&tmp.ID, &tmp.FirstName, &tmp.LastName,
-			&tmp.NickName, &tmp.Gender, &tmp.Rank,
-			&tmp.Birthday, &tmp.Deathday)
-
-		res = append(res, &tmp)
-
+	/*
 		if !rows.Next() {
-			break
+			return nil, nil
 		}
+	*/
+	var res []*Person
+	for rows.Next() {
+		var tmp *Person
+
+		tmp = assignPerson(rows)
+
+		res = append(res, tmp)
 	}
 	return res, nil
 }
@@ -114,6 +109,7 @@ func UpdateRelationFromDB(p *Person) {
 
 func GetPersonById(ID_person int) (*Person, error) {
 	rows, err := selectPersonById.Query(ID_person)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -123,32 +119,39 @@ func GetPersonById(ID_person int) (*Person, error) {
 	if !rows.Next() {
 		return nil, nil
 	}
-	var res Person
+	res := assignPerson(rows)
+	return res, nil
+}
+
+func assignPerson(rows *sql.Rows) *Person {
+	var p Person
+
 	var ID string
 	var FirstName string
 	var LastName string
-	var NickName string
+	var NickName sql.NullString
 	var Rank string
 	var Birthday string
-	var Deathday string
+	var Deathday sql.NullString
 	var Gender string
 
-	err = rows.Scan(&ID, &FirstName, &LastName,
-		&NickName, Gender, &Rank,
+	_ = rows.Scan(&ID, &FirstName, &LastName,
+		&NickName, &Gender, &Rank,
 		&Birthday, &Deathday)
 
-	res.ID = StringToInt(ID)
-	res.FirstName = FirstName
-	res.LastName = LastName
-	res.NickName = NickName
-	res.Rank = StringToInt(Rank)
+	p.ID = StringToInt(ID)
+	p.FirstName = FirstName
+	p.LastName = LastName
+	p.NickName = NickName.String
+	p.Rank = StringToInt(Rank)
 
 	if Gender == "M" {
-		res.Gender = Male
+		p.Gender = Male
 	} else {
-		res.Gender = Female
+		p.Gender = Female
 	}
-	res.Birthday = StringToTime(Birthday)
-	res.Deathday = StringToTime(Deathday)
-	return &res, nil
+	p.Birthday = StringToTime(Birthday)
+	p.Deathday = StringToTime(Deathday.String)
+
+	return &p
 }
