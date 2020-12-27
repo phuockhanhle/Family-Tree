@@ -15,7 +15,8 @@ var selectIDByInfo *sql.Stmt
 var selectIDByName *sql.Stmt
 var selectAllPeople *sql.Stmt
 var selectParentsPerson *sql.Stmt
-var selectSpousesPerson *sql.Stmt
+var selectHusbandPerson *sql.Stmt
+var selectWifePerson *sql.Stmt
 var selectChildrenPerson *sql.Stmt
 var selectAllRoot *sql.Stmt
 var selectPersonById *sql.Stmt
@@ -74,12 +75,13 @@ func Connect_database() {
 	selectParentsPerson, err = db.Prepare("SELECT R.ID_source FROM Person P, Relation R WHERE type = 'Parental' and R.ID_dest = ? ")
 
 	//create prepared statement for getting relation from database
-	selectSpousesPerson, err = db.Prepare("SELECT R.ID_source FROM Person P, Relation R WHERE type = 'Spousal' and (R.ID_dest = ? or R.ID_source = ? ) ")
+	selectHusbandPerson, err = db.Prepare("SELECT R.ID_source FROM Person P, Relation R WHERE type = 'Spousal' and R.ID_dest = ? GROUP BY R.ID_source")
+	selectWifePerson, err = db.Prepare("SELECT R.ID_dest FROM Person P, Relation R WHERE type = 'Spousal' and R.ID_source = ? GROUP BY R.ID_dest")
 
 	//create prepared statement for getting relation from database
-	selectChildrenPerson, err = db.Prepare("SELECT R.ID_dest FROM Person P, Relation R WHERE type = 'Parental' and R.ID_source = ? ")
+	selectChildrenPerson, err = db.Prepare("SELECT R.ID_dest FROM Person P, Relation R WHERE type = 'Parental' and R.ID_source = ? GROUP BY R.ID_dest")
 
-	selectAllRoot, err = db.Prepare("select P.ID_person from Person P LEFT JOIN Relation R on R.ID_dest = P.ID_person WHERE R.ID_dest IS NULL OR type = 'spousal'")
+	selectAllRoot, err = db.Prepare("select P.ID_person from Person P LEFT JOIN Relation R on R.ID_dest = P.ID_person WHERE R.ID_dest IS NULL OR type = 'spousal' ")
 
 	selectPersonById, err = db.Prepare("select ID_person,FirstName,LastName,NickName, Gender, Rank, Birthday, Deathday from Person P WHERE P.ID_person = ? ")
 

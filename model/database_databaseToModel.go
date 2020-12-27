@@ -55,27 +55,45 @@ func GetParentsFromDatabase(p *Person) ([]int, error) {
 }
 
 func GetSpousesFromDatabase(p *Person) ([]int, error) {
-	rows, err := selectSpousesPerson.Query(p.ID, p.ID)
-	if err != nil {
-		log.Fatal(err)
-	}
+	if p.Gender == Male {
+		rows, _ := selectWifePerson.Query(p.ID)
 
-	defer rows.Close()
+		defer rows.Close()
 
-	if !rows.Next() {
-		return nil, nil
-	}
-
-	var res []int
-	for {
-		var tmp int
-		err = rows.Scan(&tmp)
-		res = append(res, tmp)
 		if !rows.Next() {
-			break
+			return nil, nil
 		}
+
+		var res []int
+		for {
+			var tmp string
+			_ = rows.Scan(&tmp)
+			res = append(res, StringToInt(tmp))
+			if !rows.Next() {
+				break
+			}
+		}
+		return res, nil
+	} else {
+		rows, _ := selectHusbandPerson.Query(p.ID)
+
+		defer rows.Close()
+
+		if !rows.Next() {
+			return nil, nil
+		}
+
+		var res []int
+		for {
+			var tmp int
+			_ = rows.Scan(&tmp)
+			res = append(res, tmp)
+			if !rows.Next() {
+				break
+			}
+		}
+		return res, nil
 	}
-	return res, nil
 }
 
 func GetChildrenFromDatabase(p *Person) ([]int, error) {
@@ -102,9 +120,15 @@ func GetChildrenFromDatabase(p *Person) ([]int, error) {
 	return res, nil
 }
 
-func UpdateRelationFromDB(p *Person) {
+func UpdateRelationPerson(p *Person) {
 	p.Children, _ = GetChildrenFromDatabase(p)
 	p.Spouse, _ = GetSpousesFromDatabase(p)
+}
+
+func UpdateRelation(people []*Person) {
+	for _, p := range people {
+		UpdateRelationPerson(p)
+	}
 }
 
 func GetPersonById(ID_person int) (*Person, error) {

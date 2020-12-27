@@ -145,6 +145,7 @@ func test_modelToDataBase() {
 func test_dataBaseToModel() []*model.Person {
 	model.Connect_database()
 	allPeople, _ := model.GetAllPeople()
+	model.UpdateRelation(allPeople)
 	return allPeople
 }
 
@@ -152,6 +153,8 @@ func main() {
 	//test_modelToDataBase()
 
 	allPeople := test_dataBaseToModel()
-	log.Println(allPeople[1].FirstName)
+	for _, p := range allPeople {
+		log.Println("spouse of ", p.FirstName, "is ", p.Spouse)
+	}
 
 }

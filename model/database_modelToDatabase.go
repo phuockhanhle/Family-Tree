@@ -98,7 +98,7 @@ func Insert_relation(id_source int, id_dest int, type_relation Role) error {
 		if gender == Male {
 			return Insert_relation(id_dest, id_source, SpouseRole)
 		} else {
-			_, err := insertRelation.Exec(id_source, id_dest, "spousal")
+			_, err := insertRelation.Exec(id_dest, id_source, "spousal")
 			if err != nil {
 				log.Println(err)
 				return err
