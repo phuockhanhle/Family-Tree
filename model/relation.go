@@ -1,7 +1,7 @@
 package model
 
 type Relation struct {
-	start        int
-	end          int
-	typeRelation string
+	FromID       string
+	ToID         string
+	TypeRelation string
 }
