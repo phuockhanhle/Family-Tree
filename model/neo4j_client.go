@@ -54,7 +54,7 @@ func InsertPerson(p interface{}) TransactionOperation {
 	return TransactionOperation{
 		access_mode: neo4j.AccessModeWrite,
 		transaction_work: func(tx neo4j.Transaction) (interface{}, error) {
-			_, err := tx.Run("CREATE (p:Person $params)", map[string]interface{}{"params": StructToMap(person)})
+			_, err := tx.Run("CREATE (p:Person $params) RETURN p", map[string]interface{}{"params": StructToMap(person)})
 			return nil, err
 		},
 	}
@@ -84,7 +84,7 @@ func InsertRelation(r interface{}) TransactionOperation {
 	}
 }
 
-func MatchPerson(person_id interface{}) TransactionOperation {
+func MatchPersonByID(person_id interface{}) TransactionOperation {
 
 	return TransactionOperation{
 		access_mode: neo4j.AccessModeRead,
@@ -105,7 +105,50 @@ func MatchPerson(person_id interface{}) TransactionOperation {
 			return p, err
 		},
 	}
+}
 
+func MatchPersonByRelation(r interface{}) TransactionOperation {
+
+	rel := r.(Relation)
+
+	if rel.FromID != "" && rel.ToID != "" {
+		panic("both nodes already exist")
+	}
+
+	from_person := "from_p: Person"
+	if rel.FromID != "" {
+		from_person += " {ID: $FromID}"
+	}
+
+	to_person := "to_p: Person"
+	if rel.ToID != "" {
+		to_person += " {ID: $ToID}"
+	}
+
+	var return_result string
+	if rel.FromID != "" {
+		return_result = "to_p"
+	} else if rel.ToID != "" {
+		return_result = "from_p"
+	}
+
+	query := fmt.Sprintf("MATCH (%s)-[:%s]->(%s) RETURN %s", from_person, rel.TypeRelation, to_person, return_result)
+
+	return TransactionOperation{
+		access_mode: neo4j.AccessModeRead,
+		transaction_work: func(tx neo4j.Transaction) (interface{}, error) {
+			ret, err := tx.Run(query, StructToMap(rel))
+
+			var list_p []Person
+
+			for ret.Next() {
+				props := ret.Record().Values[0].(neo4j.Node).Props
+				list_p = append(list_p, MapToStruct(props, Person{}).(Person))
+			}
+
+			return list_p, err
+		},
+	}
 }
 
 // func (driver *neo4j.Driver) match_person(p Person) error {

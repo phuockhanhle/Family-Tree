@@ -127,55 +127,55 @@ func exemple_database() {
 
 }
 
-func main() {
-	//run exemple() to create file csv with people
-	exemple_database()
-	/*
-		pm := &(model.PM)
+// func main() {
+// 	//run exemple() to create file csv with people
+// 	exemple_database()
+// 	/*
+// 		pm := &(model.PM)
 
-		//verify dad and mom of all people
-		pm.Read_CSV()
-		for i := 0; i < pm.GetNbr(); i++ {
-			if pm.AllPeople[i].Dad != nil {
-				fmt.Println("dad of ", pm.AllPeople[i].Ten, " is ", pm.AllPeople[i].Dad.Ten)
-			}
-			if pm.AllPeople[i].Mom != nil {
-				fmt.Println("mom of ", pm.AllPeople[i].Ten, " is ", pm.AllPeople[i].Mom.Ten)
-			}
-		}
+// 		//verify dad and mom of all people
+// 		pm.Read_CSV()
+// 		for i := 0; i < pm.GetNbr(); i++ {
+// 			if pm.AllPeople[i].Dad != nil {
+// 				fmt.Println("dad of ", pm.AllPeople[i].Ten, " is ", pm.AllPeople[i].Dad.Ten)
+// 			}
+// 			if pm.AllPeople[i].Mom != nil {
+// 				fmt.Println("mom of ", pm.AllPeople[i].Ten, " is ", pm.AllPeople[i].Mom.Ten)
+// 			}
+// 		}
 
-		//verify all tree's root and its name
-		model.BuildTrees("people.csv")
-		for i := 0; i < len(model.TM); i++ {
-			fmt.Println(model.TM[i].Filename_json)
-		}
+// 		//verify all tree's root and its name
+// 		model.BuildTrees("people.csv")
+// 		for i := 0; i < len(model.TM); i++ {
+// 			fmt.Println(model.TM[i].Filename_json)
+// 		}
 
-		//make file json
-		model.TM[0].WriteToJson()
+// 		//make file json
+// 		model.TM[0].WriteToJson()
 
-		roots_of_1 := model.GetRoot(pm.AllPeople[1])
-		fmt.Println(roots_of_1)
+// 		roots_of_1 := model.GetRoot(pm.AllPeople[1])
+// 		fmt.Println(roots_of_1)
 
-		//check func SameRootByRank
-		//
-		j := 1
-		for i := 1; i < 25; i++ {
-			if i != j {
-				fmt.Println(pm.GetPeopleByID(j).Ten, "is same root with ", pm.GetPeopleByID(i).Ten, "by rank ", model.RankOfSameRoot(pm.GetPeopleByID(j), pm.GetPeopleByID(i)))
-			}
-		}
+// 		//check func SameRootByRank
+// 		//
+// 		j := 1
+// 		for i := 1; i < 25; i++ {
+// 			if i != j {
+// 				fmt.Println(pm.GetPeopleByID(j).Ten, "is same root with ", pm.GetPeopleByID(i).Ten, "by rank ", model.RankOfSameRoot(pm.GetPeopleByID(j), pm.GetPeopleByID(i)))
+// 			}
+// 		}
 
-		for i := 1; i < 25; i++ {
-			if i != j {
-				fmt.Println(pm.GetPeopleByID(j).Ten, "is distance with ", pm.GetPeopleByID(i).Ten, "by ", model.Distance(pm.GetPeopleByID(j), pm.GetPeopleByID(i)))
-			}
-		}
-		//check func Get_people_in_view
-		tmp := model.Get_people_in_view(pm.GetPeopleByID(j))
-		fmt.Println("People in view of ", pm.GetPeopleByID(j).Ten)
-		for i := 0; i < tmp.GetNbr(); i++ {
-			fmt.Println(tmp.AllPeople[i].Ten)
-		}
-	*/
+// 		for i := 1; i < 25; i++ {
+// 			if i != j {
+// 				fmt.Println(pm.GetPeopleByID(j).Ten, "is distance with ", pm.GetPeopleByID(i).Ten, "by ", model.Distance(pm.GetPeopleByID(j), pm.GetPeopleByID(i)))
+// 			}
+// 		}
+// 		//check func Get_people_in_view
+// 		tmp := model.Get_people_in_view(pm.GetPeopleByID(j))
+// 		fmt.Println("People in view of ", pm.GetPeopleByID(j).Ten)
+// 		for i := 0; i < tmp.GetNbr(); i++ {
+// 			fmt.Println(tmp.AllPeople[i].Ten)
+// 		}
+// 	*/
 
-}
+// }
