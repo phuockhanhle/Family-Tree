@@ -1,4 +1,5 @@
-1,Phuoc Khanh,Le,M,nil,nil,0,2,-1,
-2,Kim Thai,Le,M,nil,nil,-1,-1,-1,4
-3,Phuoc Long,Le,M,nil,nil,0,2,-1,
-4,Lien Khuong,Tran Dinh,F,nil,nil,-1,-1,-1,2
+FirstName,LastName,NickName,Gender
+Phuoc Khanh,Le,Ut,77
+Kim Thai,Le,,77
+Phuoc Long,Le,,77
+Lien Khuong,Tran Dinh,Bi,70

@@ -54,8 +54,14 @@ func InsertPerson(p interface{}) TransactionOperation {
 	return TransactionOperation{
 		access_mode: neo4j.AccessModeWrite,
 		transaction_work: func(tx neo4j.Transaction) (interface{}, error) {
-			_, err := tx.Run("CREATE (p:Person $params) RETURN p", map[string]interface{}{"params": StructToMap(person)})
-			return nil, err
+			ret, err := tx.Run("CREATE (p:Person $params) RETURN p", map[string]interface{}{"params": StructToMap(person)})
+
+			if ret.Next() {
+				props := ret.Record().Values[0].(neo4j.Node).Props
+				p = MapToStruct(props, Person{}).(Person)
+			}
+
+			return p, err
 		},
 	}
 }

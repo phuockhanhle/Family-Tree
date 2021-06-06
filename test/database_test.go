@@ -1,10 +1,14 @@
 package test
 
+import (
+	model "github.com/phuockhanhle/familytree/model"
+)
+
 type TestCreateNode struct {
-	info: string,
-	toInsert: Person,
-	fromPerson: Person,
-	refOutput: Person
+	info string
+	toInsert model.Person,
+	fromPerson: model.Person,
+	refOutput: model.Person
 }
 
 type TestMatchNode struct {
