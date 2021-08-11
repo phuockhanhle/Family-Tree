@@ -1,5 +1,5 @@
-FirstName,LastName,NickName,Gender
-Phuoc Khanh,Le,Ut,77
-Kim Thai,Le,,77
-Phuoc Long,Le,,77
-Lien Khuong,Tran Dinh,Bi,70
+FirstName,LastName,NickName,Gender,HasChild
+Phuoc Khanh,Le,Ut,M,0
+Kim Thai,Le,,M,1
+Phuoc Long,Le,,M,1
+Lien Khuong,Tran Dinh,Bi,F,0   
