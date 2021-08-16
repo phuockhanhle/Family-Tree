@@ -2,6 +2,8 @@ package model
 
 import (
 	"fmt"
+	"reflect"
+	"strconv"
 
 	neo4j "github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
@@ -25,6 +27,20 @@ func (neo4jDriver *Neo4jDriver) CreateInstance(uri, username, password string) {
 type TransactionOperation struct {
 	access_mode      neo4j.AccessMode
 	transaction_work neo4j.TransactionWork
+}
+
+func (neo4jDriver *Neo4jDriver) DeleteDatabase() {
+	session := neo4jDriver.inst.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	defer session.Close()
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		_, err := tx.Run("MATCH (n) DETACH DELETE n", nil)
+		return nil, err
+	})
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (neo4jDriver *Neo4jDriver) RunTransaction(trans_op func(param interface{}) TransactionOperation, param interface{}) interface{} {
@@ -85,6 +101,37 @@ func InsertRelation(r interface{}) TransactionOperation {
 		access_mode: neo4j.AccessModeWrite,
 		transaction_work: func(tx neo4j.Transaction) (interface{}, error) {
 			_, err := tx.Run(fmt.Sprintf("%s %s %s", match_from_person, match_to_person, create_relation), params)
+			return relation, err
+		},
+	}
+}
+
+func UpdatePerson(i interface{}) TransactionOperation {
+	info := i.(InfoUpdate)
+
+	params := map[string]interface{}{
+		"PersonID": info.PersonID,
+		"Field":    info.Field,
+		"Value":    info.Value,
+	}
+
+	person := string("person")
+
+	match_person := fmt.Sprintf("MATCH (%s:Person {ID: $PersonID})", person)
+	var update_info string
+
+	// FiXME : dirty trick
+	if reflect.TypeOf(info.Value) == reflect.TypeOf("") {
+		update_info = fmt.Sprintf("SET %s.%s = '%s'", person, info.Field, info.Value)
+	} else {
+		// update_info = fmt.Sprintf("SET %s.%s = %s", person, info.Field, reflect.ValueOf(info.Value.(bool)))
+		update_info = fmt.Sprintf("SET %s.%s = %s", person, info.Field, strconv.FormatBool(info.Value.(bool)))
+	}
+
+	return TransactionOperation{
+		access_mode: neo4j.AccessModeWrite,
+		transaction_work: func(tx neo4j.Transaction) (interface{}, error) {
+			_, err := tx.Run(fmt.Sprintf("%s %s", match_person, update_info), params)
 			return nil, err
 		},
 	}
@@ -113,7 +160,7 @@ func MatchPersonByID(person_id interface{}) TransactionOperation {
 	}
 }
 
-func MatchPersonByRelation(r interface{}) TransactionOperation {
+func MatchPeopleByRelation(r interface{}) TransactionOperation {
 
 	rel := r.(Relation)
 
