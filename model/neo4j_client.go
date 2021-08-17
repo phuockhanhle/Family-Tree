@@ -2,8 +2,6 @@ package model
 
 import (
 	"fmt"
-	"reflect"
-	"strconv"
 
 	neo4j "github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
@@ -118,15 +116,7 @@ func UpdatePerson(i interface{}) TransactionOperation {
 	person := string("person")
 
 	match_person := fmt.Sprintf("MATCH (%s:Person {ID: $PersonID})", person)
-	var update_info string
-
-	// FiXME : dirty trick
-	if reflect.TypeOf(info.Value) == reflect.TypeOf("") {
-		update_info = fmt.Sprintf("SET %s.%s = '%s'", person, info.Field, info.Value)
-	} else {
-		// update_info = fmt.Sprintf("SET %s.%s = %s", person, info.Field, reflect.ValueOf(info.Value.(bool)))
-		update_info = fmt.Sprintf("SET %s.%s = %s", person, info.Field, strconv.FormatBool(info.Value.(bool)))
-	}
+	update_info := fmt.Sprintf("SET %s.%s = $Value", person, info.Field)
 
 	return TransactionOperation{
 		access_mode: neo4j.AccessModeWrite,
