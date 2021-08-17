@@ -26,31 +26,25 @@ var createNodeTestSuite = []TestCreateNode [
 		info: "insert child from dad"
 		toInsert: ...
 		fromPerson: ...
-		refOutput: [IDTree(child) == IDTree(dad) && HasChild(dad) == true]
+		refOutput: [IDTree(child) == IDTree(dad)]
 	},
 	TestCreateNode{
 		info: "insert child from mom"
 		toInsert: ...
 		fromPerson: ...
-		refOutput: [IDTree(child) != IDTree(mom) && HasChild(mom) == true]
+		refOutput: [IDTree(child) != IDTree(mom)]
 	},
 	TestCreateNode{
 		info: "insert dad from child"
 		toInsert: ...
 		fromPerson: ...
-		refOutput: [IDTree(dad) == IDTree(child) && HasChild(dad) == true]
+		refOutput: [IDTree(dad) == IDTree(child)]
 	},
 	TestCreateNode{
 		info: "insert mom from child"
 		toInsert: ...
 		fromPerson: ...
-		refOutput: [IDTree(mom) != IDTree(child) && HasChild(mom) == true]
-	},
-	TestCreateNode{
-		info: "insert spouse (2 subcases: spouse with HasChild = true vs HasChild = false)"
-		toInsert: ...
-		fromPerson: ...
-		refOutput: [HasChild(fromPerson) == hasChild(toInsert)]
+		refOutput: [IDTree(mom) != IDTree(child)]
 	},
 ]
 
