@@ -5,7 +5,7 @@ type Controller struct {
 }
 
 func (controller *Controller) InitDatabase() {
-	uri := string("bolt://localhost:11006")
+	uri := string("bolt://localhost:7687")
 	username := string("neo4j")
 	password := string("1234")
 
