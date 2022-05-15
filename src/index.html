@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="./static/LogoPictosEtFonds/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail Bleu</title>
+    <script type="application/javascript">
+        function ie_test() {
+            var ua = navigator.userAgent;
+            var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+            if (is_ie) {
+                document.getElementById('root').innerHTML = '<p>Portail Bleu n\'est pas compatible avec Internet Explorer.<br/> Merci de bien vouloir vous connecter avec l\'un des navigateurs suivants : Microsoft Edge, Google Chrome, Mozilla Firefox.</p>';
+            }
+        }
+    </script>
+</head>
+
+
+<body onload="ie_test();">
+    <div id="root"></div>
+</body>
+
+</html>
