@@ -14,8 +14,8 @@ RUN npm run build
 # NGINX Web Server
 FROM nginx:stable as prod
 
-COPY --from=build /portailbleu-ui/build /var/www
-COPY --from=build /portailbleu-ui/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /Family-Tree/build /var/www
+COPY --from=build /Family-Tree/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
