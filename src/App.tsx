@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { DashBoardPage } from './composants/pages/dashboard/DashBoardPage';
-import { LoginPage } from './composants/pages/login/LoginPage';
+import { DashBoardPage } from './components/pages/dashboard/DashBoardPage';
+import { LoginPage } from './components/pages/login/LoginPage';
 
 export const App = () => {
   return (
