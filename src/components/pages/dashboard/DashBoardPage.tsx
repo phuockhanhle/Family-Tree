@@ -1,7 +1,8 @@
 import Button from "@mui/material/Button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isIE } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SimpleDialog } from "../../boxes/dialogBox/DialogBox";
 import { isObjectEmpty, logOut, securityCheck } from "../../utils/helperFunc";
 import { DashBoard } from "./DashBoard";
 
@@ -81,9 +82,36 @@ export const DashBoardPage = () => {
         }
     }
 
+    const options = [
+        'Add person',
+        'Remove person'
+    ]
+
+    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(options[0]);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (value: string) => {
+        setOpen(false);
+        setSelectedValue(value);
+    };
+
     return (
         <div>
             <DashBoard person={person} />
+            <br />
+            <br />
+            <Button variant="contained" onClick={handleClickOpen}>+</Button>
+            <SimpleDialog
+                selectedValue={selectedValue}
+                open={open}
+                onClose={handleClose}
+            />
+            <br />
+            <br />
             <Button variant="contained" onClick={() => logOut(navigate)}>logout</Button>
         </div >
     )
