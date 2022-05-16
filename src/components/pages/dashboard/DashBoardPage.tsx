@@ -13,12 +13,15 @@ export const DashBoardPage = () => {
             name: 'Sirius',
             gender: 'Male',
             age: 27,
-            uid: 'adfsgfergcfzerfdsfzeghgkl'
+            uid: 'adfsgfergcfzerfdsfzeghgkl',
+            show: true
         },
         partner: {
             name: 'Olivia',
             gender: 'Female',
-            age: 25
+            age: 25,
+            uid: 'adfsgfergcfzesdzfsfeeghgkl',
+            show: true
         },
         parents: {
             total: 2,
@@ -26,12 +29,16 @@ export const DashBoardPage = () => {
                 {
                     name: 'Adam',
                     gender: 'Male',
-                    age: 40
+                    age: 40,
+                    uid: 'adfsgfergcfzerfdsfzeghgkl',
+                    show: true
                 },
                 {
                     name: 'Eva',
                     gender: 'Female',
-                    age: 37
+                    age: 37,
+                    uid: 'adfsgfergcfzerfdsfzeghgkl',
+                    show: true
                 }]
         },
         children: {
@@ -40,12 +47,16 @@ export const DashBoardPage = () => {
                 {
                     name: 'Alex',
                     gender: 'Male',
-                    age: 5
+                    age: 5,
+                    uid: 'adfsgfergcfzerfdsfzeghgkl',
+                    show: true
                 },
                 {
                     name: 'Anna',
                     gender: 'Female',
-                    age: 4
+                    age: 4,
+                    uid: 'adfsgfergcfzerfdsfzeghgkl',
+                    show: true
                 }
             ]
         },
@@ -55,12 +66,16 @@ export const DashBoardPage = () => {
                 {
                     name: 'Bob',
                     gender: 'Male',
-                    age: 28
+                    age: 28,
+                    uid: 'adfsgfergcfzerfdsfzeghgkl',
+                    show: true
                 },
                 {
                     name: 'Elena',
                     gender: 'Female',
-                    age: 20
+                    age: 20,
+                    uid: 'adfsgfergcfzerfdsfzeghgkl',
+                    show: true
                 }
             ]
         }
