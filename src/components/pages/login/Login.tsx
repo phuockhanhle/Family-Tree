@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { logIn } from "../../utils/helperFunc";
+import { logIn } from "../../utils/HelperFuncs";
 
 export const Login = () => {
     const navigate = useNavigate();
