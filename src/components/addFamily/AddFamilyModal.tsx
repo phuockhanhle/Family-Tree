@@ -17,17 +17,17 @@ export const AddFamilyModal: React.FC<AddFamilyModalProps> = ({
     return <Dialog open={isOpen} onClose={onClose}>
         <DialogTitle>Add family member</DialogTitle>
         <DialogContent>
-            <FormControl>
+            <FormControl sx={{ mt: 2}}>
                 <InputLabel>Family member</InputLabel>
                 <Input value={name} onChange={(event) => setName(event.target.value)} />
             </FormControl>
         </DialogContent>
         <DialogActions>
-            <Button sx={{
-                color: 'blue'
-            }}
+            <Button variant='contained'
                 disabled={!name}
-                onClick={() => onSubmit(name)}>
+                onClick={() => {
+                    onSubmit(name);
+                    onClose();}}>
                 Add
             </Button>
         </DialogActions>

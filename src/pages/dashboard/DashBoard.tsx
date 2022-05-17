@@ -1,8 +1,7 @@
 import { Box } from "@mui/material";
-import * as d3 from "d3";
-import { useCallback, useEffect, useState } from "react";
-import Tree from 'react-d3-tree';
-import { RawNodeDatum } from "react-d3-tree/lib/types/common";
+import { useState } from "react";
+import Tree from "react-d3-tree/lib/Tree";
+import { RawNodeDatum, TreeNodeDatum } from "react-d3-tree/lib/types/common";
 import { AddFamilyModal } from "../../components/addFamily/AddFamilyModal";
 
 const width = '100vw';
@@ -14,50 +13,33 @@ const initialMousePosition = {
     x: circleX,
     y: height / 2
 }
-const csvUrl = 'https://gist.githubusercontent.com/curran/b236990081a24761f7000567094914e0/raw/cssNamedColors.csv'
 
 export const DashBoard = () => {
-    // const [mousePosition, setMousePosition] = useState(initialMousePosition);
-    // const [message, setMessage] = useState('')
+
     const [tree, setTree] = useState<RawNodeDatum | RawNodeDatum[]>({
         name: "Root",
-        children: [],
+        children: []
     });
-    const [isOpen, setIsOpen] = useState(false);
-    const close = () => setIsOpen(false);
-    const handleSubmit = (name: string) => { };
-
-    // wont create a new version of 'handleMouseMove' if setMousePosition doesnt change
-    // const handleMouseMove = useCallback((event: any) => {
-    //     const { clientX, clientY } = event;
-    //     setMousePosition({ x: clientX, y: clientY });
-    // }, [setMousePosition])
-
-    // useEffect(() => {
-    //     d3.csv(csvUrl).then(data => {
-    //         let message = '';
-    //         message = message + Math.round(d3.csvFormat(data).length / 1024) + ' kB\n';
-    //         message = message + data.length + ' rows\n';
-    //         message = message + data.columns.length + ' columns';
-    //         setMessage(message);
-    //     })
-    // }, [])
-
-
+    const [node, setNode] = useState<undefined | TreeNodeDatum>(undefined);
+    const close = () => setNode(undefined);
+    const handleSubmit = (name: string) => {
+        if (node) {
+            const newTree = bfs(node.name, tree, name);
+            if (newTree) {
+                setTree(newTree);
+            }
+        }
+    };
 
     return (
         <>
-            {/* <svg width={width} height={height} onMouseMove={handleMouseMove}>
-                <g>
-                    <circle cx={mousePosition.x} cy={mousePosition.y} r={circleRadius} fill="yellow" stroke="black" strokeWidth="2"></circle>
-                </g>
-            </svg> */}
             <Box sx={{
-                width:'100vw',
-                height:'100vh'
+                width: '100vw',
+                height: '100vh'
             }}>
+                <Tree data={tree} translate={{ x: 200, y: 300 }} onNodeClick={(datum) => { setNode(datum.data) }} />
                 <AddFamilyModal
-                    isOpen={isOpen}
+                    isOpen={Boolean(node)}
                     onClose={close}
                     onSubmit={handleSubmit} />
             </Box>
@@ -65,4 +47,32 @@ export const DashBoard = () => {
 
 
     );
+}
+
+function bfs(name: string, tree: RawNodeDatum | RawNodeDatum[], newNodeName: string) {
+    const queue: RawNodeDatum[] = [];
+    queue.unshift(tree as RawNodeDatum);
+
+    while (queue.length > 0) {
+        const curNode = queue.pop();
+        console.log(curNode);
+        if (curNode && curNode.children) {
+            if (curNode.name === name) {
+                curNode.children.push({
+                    name: newNodeName,
+                    children: []
+                });
+                return { ...tree };
+
+            }
+            const len = curNode.children.length;
+
+            for (let i = 0; i < len; i++) {
+                queue.unshift(curNode.children[i]);
+            }
+        }
+
+
+
+    }
 }
