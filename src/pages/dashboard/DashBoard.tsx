@@ -143,8 +143,7 @@ function parseDataToRawNodeDatum(data: any) {
                     curNode.children.push({
                         name: data[i].start.properties.FirstName,
                         attributes: {
-                            identity: data[i].start.identity,
-                            segment: data[i].segments[0].relationship
+                            identity: data[i].start.identity
                         },
                         children: []
                     });
