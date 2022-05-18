@@ -1,10 +1,12 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Tree from "react-d3-tree/lib/Tree";
 import { RawNodeDatum, TreeNodeDatum } from "react-d3-tree/lib/types/common";
 import { AddFamilyModal } from "../../components/addFamily/AddFamilyModal";
-
+import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from "react-router-dom";
+import { logOut } from '../../components/utils/HelperFuncs';
 const width = '100vw';
 const height = 300;
 const circleX = '50vw';
@@ -17,9 +19,10 @@ const initialMousePosition = {
 const url = 'https://gist.githubusercontent.com/phuockhanhle/73d2926eaf7e9f331ec55ce66c4ffdf6/raw/example_tree.json'
 
 export const DashBoard = () => {
+    const navigate = useNavigate();
     const [tree, setTree] = useState<RawNodeDatum | RawNodeDatum[]>({
         name: "Root",
-        attributes: {id: '0'},
+        attributes: {identity: 0},
         children: []
     });
     const [node, setNode] = useState<undefined | TreeNodeDatum>(undefined);
@@ -34,9 +37,9 @@ export const DashBoard = () => {
     }, [])
 
     const close = () => setNode(undefined);
-    const handleSubmitName = (name: string, id: string) => {
-        if (node) {
-            const newTree = bfs(node.name, tree, name, id);
+    const handleSubmitName = (name: string, identity: number) => {
+        if (node && node.attributes) {
+            const newTree = bfs(Number(node.attributes.identity), tree, name, identity);
             if (newTree) {
                 setTree(newTree);
             }
@@ -44,6 +47,7 @@ export const DashBoard = () => {
     };
     const handleClickAddFamily = (familyTree: RawNodeDatum) => {
         if (node) {
+            console.log(familyTree);
             let newTree = bfs_tree(node.name, tree, familyTree);
             console.log(newTree)
             if (newTree) {
@@ -56,7 +60,7 @@ export const DashBoard = () => {
         <>
             <Box sx={{
                 width: '100vw',
-                height: '900px'
+                height: '500px'
             }}>
                 <Tree data={tree} translate={{ x: 200, y: 300 }} onNodeClick={(datum) => { setNode(datum.data) }} />
                 <AddFamilyModal
@@ -65,8 +69,8 @@ export const DashBoard = () => {
                     onSubmit={handleSubmitName}
                     onClickAddFamily={handleClickAddFamily}
                     familyTree={data} />
-
             </Box>
+            <Button variant="contained" onClick={() => logOut(navigate)}> Logout </Button>
 
         </>
 
@@ -74,16 +78,16 @@ export const DashBoard = () => {
     );
 }
 
-function bfs(name: string, tree: RawNodeDatum | RawNodeDatum[], newNodeName: string, newNodeId: string) {
+function bfs(identity: number, tree: RawNodeDatum | RawNodeDatum[], newNodeName: string, newNodeId: number) {
     const queue: RawNodeDatum[] = [];
     queue.unshift(tree as RawNodeDatum);
     while (queue.length > 0) {
         const curNode = queue.pop();
-        if (curNode && curNode.children) {
-            if (curNode.name === name) {
+        if (curNode && curNode.children && curNode.attributes) {
+            if (curNode.attributes.identity === identity) {
                 curNode.children.push({
                     name: newNodeName,
-                    attributes: {id: newNodeId},
+                    attributes: {identity: newNodeId},
                     children: []
                 });
                 return { ...tree };
@@ -124,7 +128,7 @@ function parseDataToRawNodeDatum(data: any) {
     // init tree
     let tree: RawNodeDatum = {
         name: data[0].end.properties.FirstName,
-        attributes: {id: String(data[0].end.identity)},
+        attributes: {identity: data[0].end.identity},
         children: []
     }
     
@@ -135,10 +139,13 @@ function parseDataToRawNodeDatum(data: any) {
         while (queue.length > 0) {
             const curNode = queue.pop();
             if (curNode && curNode.children && curNode.attributes) {
-                if (String(data[i].end.identity) === curNode.attributes.id) {
+                if (data[i].end.identity === curNode.attributes.identity) {
                     curNode.children.push({
                         name: data[i].start.properties.FirstName,
-                        attributes: {id: String(data[i].start.identity)},
+                        attributes: {
+                            identity: data[i].start.identity,
+                            segment: data[i].segments[0].relationship
+                        },
                         children: []
                     });
                 }

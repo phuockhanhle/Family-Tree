@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 interface AddFamilyModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (familyMemberName: string, id: string) => void;
+    onSubmit: (familyMemberName: string, identity: number) => void;
     onClickAddFamily: (familyTree: any) => void;
     familyTree: any;
 }
@@ -18,7 +18,7 @@ export const AddFamilyModal: React.FC<AddFamilyModalProps> = ({
     familyTree
 }) => {
     const [name, setName] = useState('');
-    const [id, setId] = useState('');
+    const [identity, setIdentity] = useState(0);
 
 
 
@@ -35,14 +35,14 @@ export const AddFamilyModal: React.FC<AddFamilyModalProps> = ({
                 <ListItem>
                     <FormControl>
                         <InputLabel>Id</InputLabel>
-                        <Input value={id} onChange={(event) => setId(event.target.value)} />
+                        <Input value={identity} onChange={(event) => setIdentity(Number(event.target.value))} />
                     </FormControl>
                 </ListItem>
                 <DialogActions>
                     <Button variant='contained'
                         disabled={!name}
                         onClick={() => {
-                            onSubmit(name, id);
+                            onSubmit(name, identity);
                             onClose();
                         }}>
                         Add
