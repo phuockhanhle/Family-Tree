@@ -3,9 +3,11 @@ package main
 import (
 	"os"
 	"github.com/phuockhanhle/familytree/model"
+	"github.com/phuockhanhle/familytree/middleware"
 	"fmt"
 	"encoding/csv"
 	"strconv"
+	"github.com/gin-gonic/gin"
 )
 
 func addPersonByCsv(driver model.Neo4jDriver) map[string]model.Person {
@@ -98,6 +100,13 @@ func main() {
 
 	var mapPersonByID = addPersonByCsv(driver)
 	addRelationByCsv(driver, mapPersonByID)
+
+	// driver.RunTransaction(model.GetTreeByID, "tree2")
+
+	router := gin.Default()
+	router.GET("/tree/:id", middleware.GetTreeByID(driver))
+
+	router.Run("localhost:8080")
 
 	// var controller model.Controller
 

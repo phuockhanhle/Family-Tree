@@ -23,6 +23,16 @@ func insertChildOfRelation(Driver *Neo4jDriver, childID string, parentID string)
 	return ret
 }
 
+func insertParentOfRelation(Driver *Neo4jDriver, childID string, parentID string) interface{} {
+	ret := Driver.RunTransaction(InsertRelation, Relation{
+		FromID:       childID,
+		ToID:         parentID,
+		TypeRelation: "PARENTOF",
+	})
+
+	return ret
+}
+
 func (controller *Controller) InsertChildFromDad(child Person, dad Person) {
 	child.IDTree = dad.IDTree
 

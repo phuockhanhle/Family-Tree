@@ -1,9 +1,9 @@
-Phuoc Long,Kim Thai,CHILDOF
-Phuoc Long,Lien Khuong,CHILDOF
-Lien Khuong,Khoi,CHILDOF
-Diem Chi,Khoi,CHILDOF
-Thanh Trung,Diem Chi,CHILDOF
-Thanh Trung,Thanh Phuong,CHILDOF
-Ha My,Phuoc Long,CHILDOF
-Khoi Quoc,Khoi,CHILDOF
-Khoi Minh,Khoi Quoc,CHILDOF
+Kim Thai,Phuoc Long,PARENTOF
+Lien Khuong,Phuoc Long,PARENTOF
+Khoi,Lien Khuong,PARENTOF
+Khoi,Diem Chi,PARENTOF
+Diem Chi,Thanh Trung,PARENTOF
+Thanh Phuong,Thanh Trung,PARENTOF
+Phuoc Long,Ha My,PARENTOF
+Khoi Quoc,Khoi Minh,PARENTOF
+Khoi,Khoi Quoc,PARENTOF
