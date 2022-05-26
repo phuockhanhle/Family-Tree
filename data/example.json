@@ -1,0 +1,330 @@
+[
+  {
+    "start": {
+      "identity": 2,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "FirstName": "Lien Khuong",
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "ID": "bf229ed2-d624-11ec-b0b2-8c8caa4d77d8",
+        "LastName": "Tran Dinh",
+        "Gender": 70,
+        "NickName": "Bi",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "end": {
+      "identity": 10,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "FirstName": "Khoi",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "LastName": "Tran Dinh",
+        "ID": "bf241e1e-d624-11ec-b0b2-8c8caa4d77d8",
+        "Gender": 77,
+        "NickName": "",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "segments": [
+      {
+        "start": {
+          "identity": 2,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "FirstName": "Lien Khuong",
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "ID": "bf229ed2-d624-11ec-b0b2-8c8caa4d77d8",
+            "LastName": "Tran Dinh",
+            "Gender": 70,
+            "NickName": "Bi",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        },
+        "relationship": {
+          "identity": 20,
+          "start": 2,
+          "end": 10,
+          "type": "CHILDOF",
+          "properties": {}
+        },
+        "end": {
+          "identity": 10,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "FirstName": "Khoi",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "LastName": "Tran Dinh",
+            "ID": "bf241e1e-d624-11ec-b0b2-8c8caa4d77d8",
+            "Gender": 77,
+            "NickName": "",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        }
+      }
+    ],
+    "length": 1.0
+  },
+  {
+    "start": {
+      "identity": 3,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "FirstName": "Diem Chi",
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "ID": "bf22e868-d624-11ec-b0b2-8c8caa4d77d8",
+        "LastName": "Tran Dinh",
+        "Gender": 70,
+        "NickName": "Cung",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "end": {
+      "identity": 10,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "FirstName": "Khoi",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "LastName": "Tran Dinh",
+        "ID": "bf241e1e-d624-11ec-b0b2-8c8caa4d77d8",
+        "Gender": 77,
+        "NickName": "",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "segments": [
+      {
+        "start": {
+          "identity": 3,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "FirstName": "Diem Chi",
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "ID": "bf22e868-d624-11ec-b0b2-8c8caa4d77d8",
+            "LastName": "Tran Dinh",
+            "Gender": 70,
+            "NickName": "Cung",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        },
+        "relationship": {
+          "identity": 0,
+          "start": 3,
+          "end": 10,
+          "type": "CHILDOF",
+          "properties": {}
+        },
+        "end": {
+          "identity": 10,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "FirstName": "Khoi",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "LastName": "Tran Dinh",
+            "ID": "bf241e1e-d624-11ec-b0b2-8c8caa4d77d8",
+            "Gender": 77,
+            "NickName": "",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        }
+      }
+    ],
+    "length": 1.0
+  },
+  {
+    "start": {
+      "identity": 13,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "FirstName": "Khoi Quoc",
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "ID": "bf24ec75-d624-11ec-b0b2-8c8caa4d77d8",
+        "LastName": "Tran Dinh",
+        "Gender": 77,
+        "NickName": "Tis",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "end": {
+      "identity": 10,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "FirstName": "Khoi",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "LastName": "Tran Dinh",
+        "ID": "bf241e1e-d624-11ec-b0b2-8c8caa4d77d8",
+        "Gender": 77,
+        "NickName": "",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "segments": [
+      {
+        "start": {
+          "identity": 13,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "FirstName": "Khoi Quoc",
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "ID": "bf24ec75-d624-11ec-b0b2-8c8caa4d77d8",
+            "LastName": "Tran Dinh",
+            "Gender": 77,
+            "NickName": "Tis",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        },
+        "relationship": {
+          "identity": 4,
+          "start": 13,
+          "end": 10,
+          "type": "CHILDOF",
+          "properties": {}
+        },
+        "end": {
+          "identity": 10,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "FirstName": "Khoi",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "LastName": "Tran Dinh",
+            "ID": "bf241e1e-d624-11ec-b0b2-8c8caa4d77d8",
+            "Gender": 77,
+            "NickName": "",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        }
+      }
+    ],
+    "length": 1.0
+  },
+  {
+    "start": {
+      "identity": 14,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "FirstName": "Khoi Minh",
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "ID": "bf25620c-d624-11ec-b0b2-8c8caa4d77d8",
+        "LastName": "Tran Dinh",
+        "Gender": 77,
+        "NickName": "Ki",
+        "HasChild": false,
+        "IDTree": "tree2"
+      }
+    },
+    "end": {
+      "identity": 13,
+      "labels": [
+        "Person"
+      ],
+      "properties": {
+        "FirstName": "Khoi Quoc",
+        "Deathday": "0001-01-01T00:00:00[UTC]",
+        "Birthday": "0001-01-01T00:00:00[UTC]",
+        "ID": "bf24ec75-d624-11ec-b0b2-8c8caa4d77d8",
+        "LastName": "Tran Dinh",
+        "Gender": 77,
+        "NickName": "Tis",
+        "HasChild": true,
+        "IDTree": "tree2"
+      }
+    },
+    "segments": [
+      {
+        "start": {
+          "identity": 14,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "FirstName": "Khoi Minh",
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "ID": "bf25620c-d624-11ec-b0b2-8c8caa4d77d8",
+            "LastName": "Tran Dinh",
+            "Gender": 77,
+            "NickName": "Ki",
+            "HasChild": false,
+            "IDTree": "tree2"
+          }
+        },
+        "relationship": {
+          "identity": 13,
+          "start": 14,
+          "end": 13,
+          "type": "CHILDOF",
+          "properties": {}
+        },
+        "end": {
+          "identity": 13,
+          "labels": [
+            "Person"
+          ],
+          "properties": {
+            "FirstName": "Khoi Quoc",
+            "Deathday": "0001-01-01T00:00:00[UTC]",
+            "Birthday": "0001-01-01T00:00:00[UTC]",
+            "ID": "bf24ec75-d624-11ec-b0b2-8c8caa4d77d8",
+            "LastName": "Tran Dinh",
+            "Gender": 77,
+            "NickName": "Tis",
+            "HasChild": true,
+            "IDTree": "tree2"
+          }
+        }
+      }
+    ],
+    "length": 1.0
+  }
+]

@@ -1,4 +1,10 @@
-Phuoc Khanh,Le,Ut,M,0
-Kim Thai,Le,,M,1
-Phuoc Long,Le,,M,1
-Lien Khuong,Tran Dinh,Bi,F,1   
+Kim Thai,Le,,M,1,tree1
+Phuoc Long,Le,,M,1,tree1
+Lien Khuong,Tran Dinh,Bi,F,1,tree2
+Diem Chi,Tran Dinh,Cung,F,1,tree2
+Thanh Trung,Dinh,Vis,M,0,tree3
+Thanh Phuong,Dinh,,M,1,tree3
+Khoi,Tran Dinh,,M,1,tree2
+Ha My,Le,Sumi,F,0,tree1
+Khoi Quoc,Tran Dinh,Tis,M,1,tree2
+Khoi Minh,Tran Dinh,Ki,M,0,tree2
